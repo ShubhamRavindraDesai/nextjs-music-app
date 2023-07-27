@@ -1,11 +1,14 @@
+"use client";
 import React from "react";
-import Nav from "@/components/Nav";
+import Link from "next/link";
 
 const Home = (): JSX.Element => {
   return (
     <div>
-      <Nav />
       <div>Home</div>
+      <Link href={"/songs"} style={{ backgroundColor: "green" }}>
+        Go to songs
+      </Link>
     </div>
   );
 };

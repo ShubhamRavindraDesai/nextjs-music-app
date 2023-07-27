@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
+import Nav from "../components/Nav";
 
 export const metadata: Metadata = {
   title: "Feel !t",
@@ -9,5 +10,10 @@ export const metadata: Metadata = {
 export default function Layout(props: {
   children: React.ReactNode;
 }): JSX.Element {
-  return <div>{props.children}</div>;
+  return (
+    <div>
+      <Nav />
+      {props.children}
+    </div>
+  );
 }
