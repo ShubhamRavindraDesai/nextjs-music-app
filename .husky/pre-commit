@@ -3,14 +3,9 @@
 
 echo '🏗️👷 Styling, testing and building your project before committing'
 
-# Checking Prettier standards
-npm run check-format ||
-(
-    echo 'Fix yout styling first.
-            Prettier Check Failed. Run npm run format, add changes and try commit again.';
-    false;
-)
+# Fixing Prettier standards
 
+npm run format 
 # Checking ESLint Standards
 npm run check-lint ||
 (

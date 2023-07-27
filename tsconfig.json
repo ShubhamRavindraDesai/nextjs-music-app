@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "baseUrl": ".",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,9 +21,32 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/src/*": ["app/*"],
+      "@/components/*": ["app/components/*"],
+      "@/utils/*": ["app/utils/*"],
+      "@/images/*": ["app/assets/images/*"],
+      "@/icons/*": ["app/assets/icons/*"],
+      "@/fonts/*": ["app/assets/fonts/*"],
+      "@/shared-ui-components/*": ["app/components/shared-ui-components/*"],
+      "@/constants/*": ["app/constants/*"],
+      "@/shared-layouts/*": ["app/components/shared-layouts/*"],
+      "@/shared-containers/*": ["app/components/shared-containers/*"],
+      "@/shared-components/*": ["app/components/shared-components/*"],
+      "@/hooks/*": ["app/hooks/*"],
+      "@/assets/*": ["app/assets/*"],
+      "@/routes/*": ["app/routes/*"],
+      "@/supabaseClient/*": ["app/supabaseClient/*"],
+      "@/reducers/*": ["app/reducers/*"],
+      "@/ducks/*": ["app/ducks/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "**/*.jsx"
+  ],
   "exclude": ["node_modules"]
 }
