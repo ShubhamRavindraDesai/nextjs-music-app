@@ -1,6 +1,6 @@
+import Nav from "@/components/Nav";
 import type { Metadata } from "next";
 import React from "react";
-import Nav from "../components/Nav";
 
 export const metadata: Metadata = {
   title: "Feel !t",

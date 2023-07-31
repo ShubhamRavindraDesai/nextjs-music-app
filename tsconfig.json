@@ -23,30 +23,24 @@
     "paths": {
       "@/*": ["./*"],
       "@/src/*": ["app/*"],
-      "@/components/*": ["app/components/*"],
-      "@/utils/*": ["app/utils/*"],
-      "@/images/*": ["app/assets/images/*"],
-      "@/icons/*": ["app/assets/icons/*"],
-      "@/fonts/*": ["app/assets/fonts/*"],
-      "@/shared-ui-components/*": ["app/components/shared-ui-components/*"],
-      "@/constants/*": ["app/constants/*"],
-      "@/shared-layouts/*": ["app/components/shared-layouts/*"],
-      "@/shared-containers/*": ["app/components/shared-containers/*"],
-      "@/shared-components/*": ["app/components/shared-components/*"],
-      "@/hooks/*": ["app/hooks/*"],
-      "@/assets/*": ["app/assets/*"],
-      "@/routes/*": ["app/routes/*"],
-      "@/supabaseClient/*": ["app/supabaseClient/*"],
-      "@/reducers/*": ["app/reducers/*"],
-      "@/ducks/*": ["app/ducks/*"]
+      "@/components/*": ["components/*"],
+      "@/utils/*": ["utils/*"],
+      "@/images/*": ["assets/images/*"],
+      "@/icons/*": ["assets/icons/*"],
+      "@/fonts/*": ["assets/fonts/*"],
+      "@/shared-ui-components/*": ["components/shared-ui-components/*"],
+      "@/constants/*": ["constants/*"],
+      "@/shared-layouts/*": ["components/shared-layouts/*"],
+      "@/shared-containers/*": ["components/shared-containers/*"],
+      "@/shared-components/*": ["components/shared-components/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/assets/*": ["assets/*"],
+      "@/routes/*": ["routes/*"],
+      "@/supabaseClient/*": ["supabaseClient/*"],
+      "@/reducers/*": ["reducers/*"],
+      "@/ducks/*": ["ducks/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "**/*.jsx"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
