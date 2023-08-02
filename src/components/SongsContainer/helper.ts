@@ -1,26 +1,26 @@
 import axios from "axios";
 
 interface ResponseType {
-  data: Song[] | null;
+  data: Song[];
   error: string | null;
 }
 
 export const getSongs = async (url: string): Promise<ResponseType> => {
   try {
-    const response = await axios(url);
+    const response = await axios.get(url);
 
     if (response?.data !== null) {
-      response?.data?.songs.forEach((element: Song) => {
+      response?.data?.data?.songs.forEach((element: Song) => {
         delete element.createdAt;
         delete element.updatedAt;
       });
-      return { data: response?.data.songs as Song[], error: null };
+      return { data: response?.data?.data?.songs as Song[], error: null };
     } else {
       return { data: [], error: "Failed to fetch data" };
     }
   } catch (error) {
     return {
-      data: null,
+      data: [],
       error: "Failed to get songs",
     };
   }

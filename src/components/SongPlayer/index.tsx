@@ -18,20 +18,20 @@ import { setCurrentSong, setPlay } from "@/reducers/SongReducer";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import { sliceText } from "@/utils/GlobalFuntions";
-import store from "@/src/ducks/store";
+import { useDispatch, useSelector } from "react-redux";
 
 const SongPlayer = (): JSX.Element => {
   const {
     songs,
     currentSong,
     songAction: { isPlaying },
-  } = store.getState().song;
+  } = useSelector(({ song }: { song: SongStoreType }) => song);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [volume, setVolume] = useState(50);
   const [trackTime, setTrackTime] = useState(0);
   const [firstRender, setFirstRender] = useState(true);
-  const dispatch = store.dispatch;
+  const dispatch = useDispatch();
 
   // Functions
   const togglePlayback = (): void => {

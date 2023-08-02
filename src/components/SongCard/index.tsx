@@ -7,9 +7,8 @@ import PauseIcon from "@mui/icons-material/Pause";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LazyImage from "../LazyImage";
 import { StyledDetailsBox, StyledImageBox, StyledRootBox } from "./style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentSong, setPlay } from "@/src/reducers/SongReducer";
-import store from "@/src/ducks/store";
 
 const SongCard = (props: CardPropType): JSX.Element => {
   const {
@@ -18,7 +17,7 @@ const SongCard = (props: CardPropType): JSX.Element => {
   } = useSelector(({ song }: { song: SongStoreType }) => song);
 
   const { song } = props;
-  const dispatch = store.dispatch;
+  const dispatch = useDispatch();
   const songIsPlaying =
     isPlaying && currentSong?.previewUrl === song?.previewUrl;
 
