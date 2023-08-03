@@ -4,6 +4,7 @@ export const BOXSHADOW_1 =
 export const DEFAULT_SONG_REQUEST_LIMIT = 25;
 
 export const INITIAL_SONG: Song = {
+  id: "",
   name: "",
   previewUrl: "",
   artworkUrl100: "",
@@ -28,6 +29,7 @@ export const INITIAL_SONG: Song = {
 };
 
 export const mockSongData: Song = {
+  id: "",
   name: "",
   previewUrl: "",
   artworkUrl100: "",

@@ -4,12 +4,14 @@ import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 interface UseScrollType {
+  isLoading: boolean;
   scrollIsLoading: boolean;
   changeOffset: () => void;
   setScrollLoading: (loading: boolean) => void;
   containerRef: React.RefObject<HTMLDivElement>;
 }
 const useScroll = ({
+  isLoading,
   scrollIsLoading,
   setScrollLoading,
   containerRef,
@@ -27,14 +29,21 @@ const useScroll = ({
       const isNotScrolledToBottom =
         Math.floor(scrollHeight - scrollTop) !== clientHeight;
 
-      if (isNotScrolledToBottom || scrollIsLoading || search) {
+      if (isLoading || isNotScrolledToBottom || scrollIsLoading || search) {
         return;
       }
       setScrollLoading(true);
       changeOffset();
       setScrollLoading(false);
     }
-  }, [containerRef, scrollIsLoading, search, changeOffset, setScrollLoading]);
+  }, [
+    containerRef,
+    isLoading,
+    scrollIsLoading,
+    search,
+    setScrollLoading,
+    changeOffset,
+  ]);
 
   useEffect(() => {
     const containerDivRef = containerRef.current;

@@ -1,32 +1,38 @@
-// import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 export const GET = async (
   req: Request
 ): Promise<
-  NextResponse<{ data: unknown | null; err: string | null; message: string }>
+  | NextResponse<{
+      message: string;
+      songs: Song[];
+      success: boolean;
+    }>
+  | NextResponse<{
+      error: string;
+    }>
 > => {
   try {
     const url = new URL(req.url);
     const search = url.searchParams.get("search") as string;
     const skip = Number(url.searchParams.get("skip"));
-
     const prisma = new PrismaClient();
+
+    if (!search) {
+      const songs = await prisma.song.findMany({ take: 25, skip: skip ?? 0 });
+      return NextResponse.json({
+        message: "success",
+        songs,
+        success: true,
+      });
+    }
+
     const songs = await prisma.song.findMany({
       where: {
         OR: [
           {
-            artistName: { contains: search },
-          },
-          {
             name: { contains: search },
-          },
-          {
-            trackName: { contains: search },
-          },
-          {
-            primaryGenreName: { contains: search },
           },
         ],
       },
@@ -35,24 +41,23 @@ export const GET = async (
     });
 
     if (!songs.length) {
-      const songs = await prisma.song.findMany({ take: 25, skip: skip ?? 0 });
       return NextResponse.json({
         message: "No record founds",
-        data: { songs, count: songs.length },
-        err: null,
+        songs: [],
+        success: true,
       });
     }
 
     return NextResponse.json({
-      data: { songs, count: songs.length },
-      err: null,
       message: "success",
+      songs,
+      success: true,
     });
   } catch (err) {
-    return NextResponse.json({
-      data: null,
-      err: "Error connecting to MongoDB",
-      message: "error",
-    });
+    const error = err as { message: string; status: number };
+    return NextResponse.json(
+      { error: error.message ?? "something went wrong" },
+      { status: 500 }
+    );
   }
 };

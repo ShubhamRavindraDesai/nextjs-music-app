@@ -1,4 +1,5 @@
 interface Song {
+  id: string;
   updatedAt?: string;
   createdAt?: string;
   description: string;

@@ -11,6 +11,8 @@ import { getSongs } from "./helper";
 import { BOXSHADOW_1 } from "@/src/constants";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import toast from "react-hot-toast";
+import NoDataFound from "../NoDataFound";
 
 const SongsContainer = (): JSX.Element => {
   const {
@@ -20,27 +22,30 @@ const SongsContainer = (): JSX.Element => {
   } = useSelector(({ song }: { song: SongStoreType }) => song);
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [scrollIsLoading, setScrollIsLoading] = useState(false);
   const [page, setPage] = useState<number>(1);
-  const [skip, setSkip] = useState<number>(25);
+  const [skip, setSkip] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollAdd = async (
     pageNumber: number,
     pageSize: number
   ): Promise<void> => {
-    const skipAmount = (pageSize += 25);
-    const url = `http://127.0.0.1:3000/api/songs?search=${
-      search || "term"
-    }&page=${page}&skip=${skipAmount}`;
+    const url = `http://127.0.0.1:3000/api/songs?search=${search}&page=${page}&skip=${pageSize}`;
     setIsLoading(true);
-    const newSongs = await getSongs(url);
+    const { data, error, message } = await getSongs(url);
+
+    if (error) toast.error(error ?? message);
     setIsLoading(false);
     if (!currentSong?.previewUrl) {
-      dispatch(setCurrentSong({ currentSong: newSongs.data[0] }));
+      dispatch(setCurrentSong({ currentSong: data[0] }));
     }
-    dispatch(setSongs({ songs: newSongs.data }));
+    if (data?.length) {
+      dispatch(setSongs({ songs: data }));
+    } else {
+      toast.error(message);
+    }
   };
 
   const setScrollLoading = (loading: boolean): void => {
@@ -54,12 +59,15 @@ const SongsContainer = (): JSX.Element => {
       return (prev += 25);
     });
   };
+
   useScroll({
+    isLoading,
     scrollIsLoading,
     setScrollLoading,
     containerRef,
     changeOffset,
   });
+
   useEffect(() => {
     setScrollIsLoading(true);
     void scrollAdd(page, skip);
@@ -136,6 +144,11 @@ const SongsContainer = (): JSX.Element => {
               );
             })}
         {isLoading && songs?.length ? renderSkelton() : <></>}
+        {!isLoading && !songs?.length && (
+          <Grid item xs={10} sm={10} md={10} lg={10}>
+            <NoDataFound />
+          </Grid>
+        )}
       </Grid>
 
       {/* <SongModal isOpen={isOpen} onClose={handleClose} setSong={setSong} /> */}

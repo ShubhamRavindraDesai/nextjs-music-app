@@ -20,19 +20,45 @@ import theme from "@/utils/Theme";
 import { debounce } from "@/utils/GlobalFuntions";
 import { setSearch, setSongs } from "@/reducers/SongReducer";
 import Sidebar from "../Sidebar";
-import { UserButton } from "@clerk/nextjs";
 import store from "@/src/ducks/store";
+import { Avatar, Menu, MenuItem } from "@mui/material";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Nav = (): JSX.Element => {
   const dispatch = store.dispatch;
   const [isDrawerOpen, setDrawerIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
+  const router = useRouter();
 
   const handleDrawerClose = (): void => {
     setDrawerIsOpen(false);
   };
+  const logout = async (): Promise<void> => {
+    try {
+      await axios.get("/api/users/logout");
+      toast.success("Logout successful");
+      router.push("/login");
+    } catch (err) {
+      const error = err as { message: string; status: number };
+      // eslint-disable-next-line no-console
+      console.log(error.message);
+      toast.error(error.message);
+    }
+  };
 
   const handleOpenDrawer = (): void => {
     setDrawerIsOpen((prev) => !prev);
+  };
+
+  const handleLogout = (): void => {
+    setAnchorEl(null);
+    void logout();
+  };
+  const handleClose = (): void => {
+    setAnchorEl(null);
   };
 
   const setSearchVal = (searchInputVal: string): void => {
@@ -43,6 +69,39 @@ const Nav = (): JSX.Element => {
   const handleSearch = debounce((inputVal: string) => {
     setSearchVal(inputVal);
   }, 1000);
+
+  const handleProfileMenuOpen = (
+    event: React.MouseEvent<HTMLElement>
+  ): void => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const renderMenu = (
+    <Menu
+      sx={{ zIndex: "99999" }}
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      id="primary-search-account-menu"
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleClose}
+    >
+      <MenuItem
+        onClick={(): void => {
+          handleLogout();
+        }}
+      >
+        Log Out
+      </MenuItem>
+    </Menu>
+  );
 
   return (
     <StyledRootBox>
@@ -58,7 +117,7 @@ const Nav = (): JSX.Element => {
             color="inherit"
             aria-label="open drawer"
             onClick={handleOpenDrawer}
-            sx={{ mr: 2, color: theme.palette.secondary.dark }}
+            sx={{ mr: 2, color: theme.palette.secondary.light }}
           >
             <MenuIcon />
           </IconButton>
@@ -90,9 +149,20 @@ const Nav = (): JSX.Element => {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <UserButton afterSignOutUrl="/" />
+          <IconButton
+            size="large"
+            edge="end"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit"
+          >
+            <Avatar />
+          </IconButton>
         </Toolbar>
       </AppBar>
+      {renderMenu}
     </StyledRootBox>
   );
 };

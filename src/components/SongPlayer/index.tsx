@@ -69,8 +69,7 @@ const SongPlayer = (): JSX.Element => {
   };
 
   const handlePrevButtonClick = (): void => {
-    const isPrevSong = (song: Song): boolean =>
-      song?.previewUrl === currentSong?.previewUrl;
+    const isPrevSong = (song: Song): boolean => song?.id === currentSong?.id;
     const currentSongIndex = songs?.findIndex(isPrevSong);
     const prevSong =
       songs[currentSongIndex > 0 ? currentSongIndex - 1 : songs?.length - 1];
@@ -78,8 +77,7 @@ const SongPlayer = (): JSX.Element => {
   };
 
   const handleNextButtonClick = (): void => {
-    const isNextSong = (song: Song): boolean =>
-      song?.previewUrl === currentSong?.previewUrl;
+    const isNextSong = (song: Song): boolean => song?.id === currentSong?.id;
     const currentSongIndex = songs?.findIndex(isNextSong);
     const prevSong =
       songs[currentSongIndex < songs.length - 1 ? currentSongIndex + 1 : 0];
