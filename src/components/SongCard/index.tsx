@@ -37,7 +37,7 @@ const SongCard = (props: CardPropType): JSX.Element => {
         setSong(song);
       }}
     >
-      <StyledImageBox>
+      <StyledImageBox data-testid="image">
         <LazyImage url={song?.imageUrl} lowUrl={song?.lowUrl} />
       </StyledImageBox>
       <StyledDetailsBox>

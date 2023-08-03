@@ -1,4 +1,4 @@
-import { BOXSHADOW_1 } from "@/constants/index";
+import { BOXSHADOW_1 } from "@/src/constants/index";
 import { Box, Drawer, InputBase } from "@mui/material";
 import { styled } from "@mui/material/styles";
 

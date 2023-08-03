@@ -16,22 +16,24 @@ import {
   StyledInputBase,
   StyledRootBox,
 } from "./style";
-import theme from "@/utils/Theme";
-import { debounce } from "@/utils/GlobalFuntions";
-import { setSearch, setSongs } from "@/reducers/SongReducer";
+import theme from "@/src/utils/Theme";
+import { debounce } from "@/src/utils/GlobalFuntions";
+import { setSearch, setSongs } from "@/src/reducers/SongReducer";
 import Sidebar from "../Sidebar";
 import store from "@/src/ducks/store";
 import { Avatar, Menu, MenuItem } from "@mui/material";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Nav = (): JSX.Element => {
+const Nav = ({
+  navigate,
+}: {
+  navigate: (href: string) => void;
+}): JSX.Element => {
   const dispatch = store.dispatch;
   const [isDrawerOpen, setDrawerIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-  const router = useRouter();
 
   const handleDrawerClose = (): void => {
     setDrawerIsOpen(false);
@@ -40,7 +42,7 @@ const Nav = (): JSX.Element => {
     try {
       await axios.get("/api/users/logout");
       toast.success("Logout successful");
-      router.push("/login");
+      navigate("/login");
     } catch (err) {
       const error = err as { message: string; status: number };
       // eslint-disable-next-line no-console
@@ -104,7 +106,7 @@ const Nav = (): JSX.Element => {
   );
 
   return (
-    <StyledRootBox>
+    <StyledRootBox data-testid="nav">
       <StyledDrawer open={isDrawerOpen} onClose={handleDrawerClose}>
         <Sidebar handleCloseDrawer={handleDrawerClose} />
       </StyledDrawer>

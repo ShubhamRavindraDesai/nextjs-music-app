@@ -1,4 +1,4 @@
-import { BOXSHADOW_1 } from "@/constants/index";
+import { BOXSHADOW_1 } from "@/src/constants";
 import { Box, Skeleton, styled } from "@mui/material";
 
 export const StyledRootBox = styled(Box)`

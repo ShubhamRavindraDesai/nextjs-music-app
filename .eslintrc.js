@@ -36,6 +36,7 @@ module.exports = {
     "next.config.js",
     "postcss.config.js",
     "jest.config.mjs",
+    "coverage",
   ],
   rules: {
     "no-console": "error",

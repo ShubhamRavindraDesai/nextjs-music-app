@@ -1,4 +1,4 @@
-import { INITIAL_SONG } from "@/constants/index";
+import { INITIAL_SONG } from "@/src/constants";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: SongStoreType = {
