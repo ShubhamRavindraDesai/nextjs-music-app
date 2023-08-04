@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
+    "baseUrl": ".",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,9 +21,32 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/app/*": ["src/app/*"],
+      "@/components/*": ["src/components/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/images/*": ["src/assets/images/*"],
+      "@/icons/*": ["src/assets/icons/*"],
+      "@/fonts/*": ["src/assets/fonts/*"],
+      "@/shared-ui-components/*": ["src/components/shared-ui-components/*"],
+      "@/constants/*": ["src/constants/*"],
+      "@/shared-layouts/*": ["src/components/shared-layouts/*"],
+      "@/shared-containers/*": ["src/components/shared-containers/*"],
+      "@/shared-components/*": ["src/components/shared-components/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/assets/*": ["src/assets/*"],
+      "@/routes/*": ["src/routes/*"],
+      "@/supabaseClient/*": ["src/supabaseClient/*"],
+      "@/reducers/*": ["src/reducers/*"],
+      "@/ducks/*": ["src/ducks/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "**/*.test.tsx"
+  ],
   "exclude": ["node_modules"]
 }
