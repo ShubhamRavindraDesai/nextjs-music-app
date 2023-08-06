@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Grid, IconButton, Skeleton } from "@mui/material";
+import { Box, Grid, Skeleton } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { setCurrentSong, setSongs } from "@/reducers/SongReducer";
 
@@ -9,8 +9,6 @@ import SongCard from "../SongCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getSongs } from "./helper";
 import { BOXSHADOW_1 } from "@/src/constants";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import toast from "react-hot-toast";
 import NoDataFound from "../NoDataFound";
 import { useRouter } from "next/navigation";
@@ -96,16 +94,13 @@ const SongsContainer = (): JSX.Element => {
               sx={{
                 backgroundColor: "#ffffff",
                 borderRadius: "0 0 8px 8px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
               }}
             >
               <Skeleton width="60%" />
               <Skeleton width="40%" />
-              <IconButton size={"large"}>
-                <PlayArrowIcon />
-              </IconButton>
-              <IconButton size={"large"}>
-                <FavoriteBorderIcon />
-              </IconButton>
             </Box>
           </Box>
         </Grid>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Typography } from "@mui/material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,14 +27,19 @@ const SongModal = ({ song }: SongModalType): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    if (song) {
+      dispatch(setCurrentSong({ currentSong: song }));
+      dispatch(setPlay({ isPlaying: true }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [song]);
+
   return (
     <StyledModelBox>
       <CardBox>
         <StyledImageBox>
-          <LazyImage
-            url={song?.artworkUrl100 ?? ""}
-            lowUrl={song?.artworkUrl60 ?? ""}
-          />
+          <LazyImage url={song?.imageUrl ?? ""} lowUrl={song?.lowUrl ?? ""} />
         </StyledImageBox>
         <DetailsBox>
           <Typography component="h5" variant="h6" color="#334155">
