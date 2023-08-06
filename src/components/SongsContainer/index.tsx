@@ -13,6 +13,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import toast from "react-hot-toast";
 import NoDataFound from "../NoDataFound";
+import { useRouter } from "next/navigation";
 
 const SongsContainer = (): JSX.Element => {
   const {
@@ -21,6 +22,7 @@ const SongsContainer = (): JSX.Element => {
     songAction: { search },
   } = useSelector(({ song }: { song: SongStoreType }) => song);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
   const [scrollIsLoading, setScrollIsLoading] = useState(false);
@@ -139,7 +141,13 @@ const SongsContainer = (): JSX.Element => {
                   lg={2}
                   width={"100%"}
                 >
-                  <SongCard key={index} song={song} />
+                  <SongCard
+                    navigate={(path: string) => {
+                      router.push(path);
+                    }}
+                    key={index}
+                    song={song}
+                  />
                 </Grid>
               );
             })}
@@ -150,8 +158,6 @@ const SongsContainer = (): JSX.Element => {
           </Grid>
         )}
       </Grid>
-
-      {/* <SongModal isOpen={isOpen} onClose={handleClose} setSong={setSong} /> */}
     </div>
   );
 };

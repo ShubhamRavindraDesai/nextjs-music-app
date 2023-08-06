@@ -10,7 +10,12 @@ describe("The card component tests", () => {
   it("The card should be in the document", () => {
     render(
       <Provider store={store}>
-        <SongCard song={mockSongData} />
+        <SongCard
+          navigate={(path: string) => {
+            ("");
+          }}
+          song={mockSongData}
+        />
       </Provider>
     );
     expect(screen.getByTestId("card")).toBeInTheDocument();
@@ -19,7 +24,12 @@ describe("The card component tests", () => {
   it("The card image should be in the document", () => {
     render(
       <Provider store={store}>
-        <SongCard song={mockSongData} />
+        <SongCard
+          navigate={(path: string) => {
+            ("");
+          }}
+          song={mockSongData}
+        />
       </Provider>
     );
     expect(screen.getByTestId("image")).toBeInTheDocument();
@@ -28,7 +38,12 @@ describe("The card component tests", () => {
   it("The song name  should be in the document", () => {
     render(
       <Provider store={store}>
-        <SongCard song={mockSongData} />
+        <SongCard
+          navigate={(path: string) => {
+            ("");
+          }}
+          song={mockSongData}
+        />
       </Provider>
     );
     expect(screen.getByTestId("song-name")).toBeInTheDocument();
@@ -37,7 +52,12 @@ describe("The card component tests", () => {
   it("The artist name should be in the document", () => {
     render(
       <Provider store={store}>
-        <SongCard song={mockSongData} />
+        <SongCard
+          navigate={(path: string) => {
+            ("");
+          }}
+          song={mockSongData}
+        />
       </Provider>
     );
     expect(screen.getByTestId("artist-name")).toBeInTheDocument();
@@ -46,7 +66,12 @@ describe("The card component tests", () => {
   it("The play button should be in the document", () => {
     render(
       <Provider store={store}>
-        <SongCard song={mockSongData} />
+        <SongCard
+          navigate={(path: string) => {
+            ("");
+          }}
+          song={mockSongData}
+        />
       </Provider>
     );
     expect(screen.getByTestId("play-button")).toBeInTheDocument();
@@ -55,7 +80,12 @@ describe("The card component tests", () => {
   it("The like button should be in the document", () => {
     render(
       <Provider store={store}>
-        <SongCard song={mockSongData} />
+        <SongCard
+          navigate={(path: string) => {
+            ("");
+          }}
+          song={mockSongData}
+        />
       </Provider>
     );
     expect(screen.getByTestId("like-button")).toBeInTheDocument();
