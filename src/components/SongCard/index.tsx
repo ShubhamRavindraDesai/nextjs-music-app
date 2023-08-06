@@ -16,7 +16,7 @@ const SongCard = (props: CardPropType): JSX.Element => {
     songAction: { isPlaying },
   } = useSelector(({ song }: { song: SongStoreType }) => song);
 
-  const { song } = props;
+  const { song, navigate } = props;
   const dispatch = useDispatch();
   const songIsPlaying =
     isPlaying && currentSong?.previewUrl === song?.previewUrl;
@@ -28,6 +28,7 @@ const SongCard = (props: CardPropType): JSX.Element => {
       dispatch(setCurrentSong({ currentSong: song }));
       dispatch(setPlay({ isPlaying: true }));
     }
+    navigate(`/songs/${song.id}`);
   };
 
   return (

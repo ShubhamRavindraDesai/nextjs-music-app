@@ -6,10 +6,7 @@ export const StyledModelBox = styled(Box)`
   flex-direction: column !important;
   align-items: flex-end !important;
   margin: 67px auto 84px auto !important;
-  overflow: scroll;
-  height: calc(100vh - 151px);
-  @media (min-width: 600px) {
-  }
+
   background-color: #ffffff;
   border-radius: 8px;
   & .MuiStack-root {
@@ -48,11 +45,11 @@ export const StyledImageBox = styled(Box)`
     rgba(0, 0, 0, 0.07) 0px 16px 32px,
     rgba(0, 0, 0, 0.07) 0px 32px 64px;
   margin: 16px;
-  width: 500px;
+  width: 40%;
   border-radius: 8px;
   height: 500px;
-  @media (max-width: 1000px) {
-    width: 400px;
+  @media (max-width: 700px) {
+    width: 90%;
     height: 400px;
   }
   @media (max-width: 500px) {

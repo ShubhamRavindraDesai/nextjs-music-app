@@ -1,80 +1,74 @@
+"use client";
 import React from "react";
-import { Button, IconButton, Modal, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { useSelector } from "react-redux";
-import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
 import { CardBox, DetailsBox, StyledImageBox, StyledModelBox } from "./style";
 import { getYear } from "@/utils/Date";
 import { sliceText } from "@/utils/GlobalFuntions";
 import LazyImage from "../LazyImage";
+import { setCurrentSong, setPlay } from "@/src/reducers/SongReducer";
+import { INITIAL_SONG } from "@/src/constants";
 
-const SongModal = ({
-  isOpen,
-  onClose,
-  setSong,
-}: SongModalType): JSX.Element => {
+const SongModal = ({ song }: SongModalType): JSX.Element => {
   const {
     currentSong,
     songAction: { isPlaying },
   } = useSelector(({ song }: { song: SongStoreType }) => song);
-  const releseYear = getYear(currentSong?.releaseDate);
+  const releseYear = getYear(song?.releaseDate ?? "");
+
+  const dispatch = useDispatch();
+  const setPlaySong = (song: Song): void => {
+    if (song?.id === currentSong?.id) {
+      dispatch(setPlay({ isPlaying: !isPlaying }));
+    } else {
+      dispatch(setCurrentSong({ song }));
+      dispatch(setPlay({ isPlaying: true }));
+    }
+  };
 
   return (
-    <Modal
-      open={isOpen}
-      onClose={onClose}
-      aria-labelledby="song-model"
-      aria-describedby="description-song-details"
-    >
-      <StyledModelBox>
-        <IconButton onClick={onClose}>
-          <CloseIcon fontSize="large" />
-        </IconButton>
-        <CardBox>
-          <StyledImageBox>
-            <LazyImage
-              url={currentSong?.artworkUrl100}
-              lowUrl={currentSong?.artworkUrl60}
-            />
-          </StyledImageBox>
-          <DetailsBox>
-            <Typography noWrap component="h5" variant="h6" color="#334155">
-              {currentSong?.collectionName || currentSong?.artistName}
-            </Typography>
-            <Typography noWrap component="h4" variant="h5">
-              {currentSong?.name ||
-                currentSong?.collectionName ||
-                currentSong?.artistName}
-            </Typography>
-            <Typography noWrap sx={{ textAlign: "center" }}>
-              {currentSong?.name ||
-                currentSong?.collectionName ||
-                currentSong?.artistName}
-              <FiberManualRecordIcon fontSize="small" color="info" />
-              {releseYear}
-            </Typography>
-            <Typography>
-              Artist : {sliceText(currentSong?.artistName, 25)}
-            </Typography>
-            <Typography>
-              Description :
-              {currentSong?.description?.split("<br />")[0] ||
-                `This song is released in ${releseYear} and the artist name is ${currentSong?.artistName}`}
-            </Typography>
-            <Button
-              sx={{
-                backgroundColor: "#E72C30 !important",
-              }}
-              onClick={() => {
-                setSong(currentSong);
-              }}
-            >
-              {isPlaying ? "Pause" : "Play Song"}
-            </Button>
-          </DetailsBox>
-        </CardBox>
-      </StyledModelBox>
-    </Modal>
+    <StyledModelBox>
+      <CardBox>
+        <StyledImageBox>
+          <LazyImage
+            url={song?.artworkUrl100 ?? ""}
+            lowUrl={song?.artworkUrl60 ?? ""}
+          />
+        </StyledImageBox>
+        <DetailsBox>
+          <Typography component="h5" variant="h6" color="#334155">
+            {song?.collectionName ?? song?.artistName}
+          </Typography>
+          <Typography component="h4" variant="h5">
+            {song?.name ?? song?.collectionName ?? song?.artistName}
+          </Typography>
+          <Typography sx={{ textAlign: "center" }}>
+            {song?.name ?? song?.collectionName ?? song?.artistName}
+            <FiberManualRecordIcon fontSize="small" color="info" />
+            {releseYear}
+          </Typography>
+          <Typography>
+            Artist : {sliceText(song?.artistName ?? "", 25)}
+          </Typography>
+          <Typography>
+            Description :
+            {song?.description?.split("<br />")[0] ??
+              `This song is released in ${releseYear} and the artist name is ${song?.artistName}`}
+          </Typography>
+          <Button
+            sx={{
+              backgroundColor: "#E72C30 !important",
+            }}
+            onClick={() => {
+              setPlaySong(song ?? INITIAL_SONG);
+            }}
+          >
+            {isPlaying ? "Pause" : "Play Song"}
+          </Button>
+        </DetailsBox>
+      </CardBox>
+    </StyledModelBox>
   );
 };
 

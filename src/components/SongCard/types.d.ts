@@ -25,4 +25,5 @@ interface Song {
 
 interface CardPropType {
   song: Song;
+  navigate: (path: string) => void;
 }
