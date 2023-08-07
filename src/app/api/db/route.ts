@@ -111,7 +111,7 @@ export const GET = async (
 ): Promise<NextResponse<{ data: string | null; err: string | null }>> => {
   try {
     const prisma = new PrismaClient();
-    const url = `https://itunes.apple.com/search/?term=${"term"}&offset=${"offset"}&limit=${1000}`;
+    const url = `https://itunes.apple.com/search/?term=${"term"}&offset=${"offset"}&limit=${25}`;
 
     const response = await axios(url);
     const songs = response?.data?.results;

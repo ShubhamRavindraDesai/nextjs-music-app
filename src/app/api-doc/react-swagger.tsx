@@ -5,6 +5,7 @@ import "swagger-ui-react/swagger-ui.css";
 import React from "react";
 
 interface ReactSwaggerProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   spec: Record<string, any>;
 }
 
