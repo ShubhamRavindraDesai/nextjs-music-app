@@ -32,7 +32,7 @@ const SongsContainer = (): JSX.Element => {
     pageNumber: number,
     pageSize: number
   ): Promise<void> => {
-    const url = `http://127.0.0.1:3000/api/songs?search=${search}&page=${page}&skip=${pageSize}`;
+    const url = `/api/songs?search=${search}&page=${page}&skip=${pageSize}`;
     setIsLoading(true);
     const { data, error, message } = await getSongs(url);
 
