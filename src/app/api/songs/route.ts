@@ -1,6 +1,52 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
+/**
+ * @swagger
+ * /api/songs:
+ *   get:
+ *     summary: Get songs data
+ *     description: Returns a list of songs from the database. You can search for songs by providing a search query parameter.
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: The search query to filter songs by name.
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: skip
+ *         description: The number of records to skip.
+ *         required: false
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Success. Returns a list of songs.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 songs:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Song'
+ *                 success:
+ *                   type: boolean
+ *       500:
+ *         description: Internal Server Error. Returns an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
 export const GET = async (
   req: Request
 ): Promise<

@@ -38,7 +38,8 @@
       "@/routes/*": ["src/routes/*"],
       "@/supabaseClient/*": ["src/supabaseClient/*"],
       "@/reducers/*": ["src/reducers/*"],
-      "@/ducks/*": ["src/ducks/*"]
+      "@/ducks/*": ["src/ducks/*"],
+      "@/lib/*": ["src/app/lib/*"]
     }
   },
   "include": [
