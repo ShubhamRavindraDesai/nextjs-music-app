@@ -13,6 +13,9 @@ export default function ForgotPasswordPage(): React.JSX.Element {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        width: "100%",
+        position: "fixed",
+        top: "25%",
       }}
     >
       <ForgotPassword

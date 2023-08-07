@@ -13,6 +13,8 @@ export default function SignupPage(): React.JSX.Element {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        position: "fixed",
+        top: "25%",
       }}
     >
       <UserSignup

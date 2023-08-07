@@ -15,6 +15,8 @@ export default function LoginPage(): JSX.Element {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        position: "fixed",
+        top: "25%",
       }}
     >
       <UserSignIn

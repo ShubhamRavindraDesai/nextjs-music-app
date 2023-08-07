@@ -14,7 +14,6 @@ import {
   SearchIconWrapper,
   StyledDrawer,
   StyledInputBase,
-  StyledRootBox,
 } from "./style";
 import theme from "@/src/utils/Theme";
 import { debounce } from "@/src/utils/GlobalFuntions";
@@ -106,7 +105,7 @@ const Nav = ({
   );
 
   return (
-    <StyledRootBox data-testid="nav">
+    <Box width="100%" sx={{ flexGrow: "1" }} data-testid="nav">
       <StyledDrawer open={isDrawerOpen} onClose={handleDrawerClose}>
         <Sidebar handleCloseDrawer={handleDrawerClose} />
       </StyledDrawer>
@@ -175,7 +174,7 @@ const Nav = ({
         </Toolbar>
       </AppBar>
       {renderMenu}
-    </StyledRootBox>
+    </Box>
   );
 };
 
