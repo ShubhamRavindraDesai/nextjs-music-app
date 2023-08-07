@@ -1,33 +1,14 @@
 "use client";
 
-import { Box, IconButton, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React from "react";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LazyImage from "../LazyImage";
 import { StyledDetailsBox, StyledImageBox, StyledRootBox } from "./style";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentSong, setPlay } from "@/src/reducers/SongReducer";
 
 const SongCard = (props: CardPropType): JSX.Element => {
-  const {
-    currentSong,
-    songAction: { isPlaying },
-  } = useSelector(({ song }: { song: SongStoreType }) => song);
-
   const { song, navigate } = props;
-  const dispatch = useDispatch();
-  const songIsPlaying =
-    isPlaying && currentSong?.previewUrl === song?.previewUrl;
 
   const setSong = (song: Song): void => {
-    if (currentSong?.previewUrl === song?.previewUrl) {
-      dispatch(setPlay({ isPlaying: !isPlaying }));
-    } else {
-      dispatch(setCurrentSong({ currentSong: song }));
-      dispatch(setPlay({ isPlaying: true }));
-    }
     navigate(`/songs/${song.id}`);
   };
 
@@ -60,34 +41,6 @@ const SongCard = (props: CardPropType): JSX.Element => {
         >
           Lyrics : {song?.artistName}
         </Typography>
-        <Box sx={{ alignSelf: "center" }}>
-          {songIsPlaying ? (
-            <IconButton
-              data-testid="pause-button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setSong(song);
-              }}
-            >
-              <PauseIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              data-testid="play-button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setSong(song);
-              }}
-            >
-              <PlayArrowIcon />
-            </IconButton>
-          )}
-          <IconButton>
-            <FavoriteBorderIcon data-testid="like-button" />
-          </IconButton>
-        </Box>
       </StyledDetailsBox>
     </StyledRootBox>
   );

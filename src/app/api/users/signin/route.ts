@@ -3,6 +3,64 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 
+/**
+ * @swagger
+ * /api/users/signin:
+ *   post:
+ *     summary: Authenticate user with credentials
+ *     description: Authenticates a user based on their email and password. If the credentials are valid, it returns a JWT token in the response for further authentication.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email address of the user.
+ *               password:
+ *                 type: string
+ *                 description: The password of the user.
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Successful login. Returns a JWT token in the response for further authentication.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message indicating that the login was successful.
+ *                 success:
+ *                   type: boolean
+ *                   description: A boolean indicating the success of the login operation.
+ *       400:
+ *         description: Bad Request. Returns an error message if the provided credentials are invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: An error message indicating the reason for the bad request.
+ *       500:
+ *         description: Internal Server Error. Returns an error message if something went wrong during the login process.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: An error message indicating the reason for the server error.
+ */
+
 export async function POST(request: NextRequest): Promise<
   | NextResponse<{
       message: string;

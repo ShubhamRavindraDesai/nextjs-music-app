@@ -94,11 +94,18 @@ const SongPlayer = (): JSX.Element => {
   }, [currentSong?.previewUrl, isPlaying]);
 
   return (
-    <StyledRootBox>
+    <StyledRootBox data-testid="song-player-root">
       <StyledBox>
-        <Box display={"flex"} alignItems={"center"} gap="20px" width={"40%"}>
+        <Box
+          data-testid="details"
+          display={"flex"}
+          alignItems={"center"}
+          gap="20px"
+          width={"40%"}
+        >
           {currentSong?.artworkUrl100 ? (
             <CardMedia
+              data-test-id="image"
               component="img"
               sx={{
                 width: "50px !important",
@@ -110,18 +117,33 @@ const SongPlayer = (): JSX.Element => {
               alt="S"
             ></CardMedia>
           ) : (
-            <Skeleton height="86px" width="50px" />
+            <Skeleton data-testid="image-skeleton" height="86px" width="50px" />
           )}
           {currentSong?.name || currentSong?.artistName ? (
-            <Typography>
+            <Typography data-testid="song-name">
               {sliceText(currentSong?.name || currentSong?.artistName)}
             </Typography>
           ) : (
-            <Skeleton height="40px" width="70px" />
+            <Skeleton
+              data-testid="song-name-skeleton"
+              height="40px"
+              width="70px"
+            />
           )}
         </Box>
 
-        <Box sx={{ display: "flex", flexDirection: "column", width: "60%" }}>
+        <Box
+          data-testid="controls"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            "@media (max-width: 700px)": {
+              flexDirection: "row",
+              alignItems: "center",
+            },
+            width: "60%",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -148,7 +170,13 @@ const SongPlayer = (): JSX.Element => {
             </IconButton>
           </Box>
           <Slider
-            sx={{ width: "100%", color: "#082f49" }}
+            sx={{
+              width: "100%",
+              color: "#082f49",
+              "@media (max-width: 500px)": {
+                display: "none",
+              },
+            }}
             size="small"
             value={Number(trackTime)}
             onChange={(_, newValue) => {
@@ -162,7 +190,7 @@ const SongPlayer = (): JSX.Element => {
           />
         </Box>
       </StyledBox>
-      <StyledVolumeButtonBox>
+      <StyledVolumeButtonBox data-testid="volume-slider">
         {volume <= 0 ? (
           <VolumeOffIcon onClick={toggleVolume} />
         ) : (
@@ -181,6 +209,7 @@ const SongPlayer = (): JSX.Element => {
         />
       </StyledVolumeButtonBox>
       <audio
+        data-testid="audio-el"
         ref={audioRef}
         src={currentSong?.previewUrl || ""}
         onTimeUpdate={() => {

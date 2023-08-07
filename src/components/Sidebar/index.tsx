@@ -13,10 +13,10 @@ const SideBar = ({ handleCloseDrawer }: NavigationProps): JSX.Element => {
   };
 
   return (
-    <Box width={"100%"} sx={{ padding: "16px" }}>
-      <Typography>Navigation</Typography>
+    <Box data-testid="sidebar-root" width={"100%"} sx={{ padding: "16px" }}>
+      <Typography data-testid="header">Navigation</Typography>
 
-      <Link href={"/songs"}>
+      <Link data-testid="home-link" href={"/songs"}>
         <Typography
           sx={{ width: "100" }}
           onClick={() => {

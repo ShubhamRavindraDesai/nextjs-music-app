@@ -2,11 +2,68 @@ import { type NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 
+/**
+ * @swagger
+ * /api/users/signup:
+ *   post:
+ *     summary: Create a new user
+ *     description: Creates a new user with the provided email and password. If the user with the given email already exists, it returns a 400 Bad Request response.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email address of the new user.
+ *               password:
+ *                 type: string
+ *                 description: The password of the new user.
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       201:
+ *         description: User created successfully. Returns a success message in the response.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message indicating that the user was created successfully.
+ *                 success:
+ *                   type: boolean
+ *                   description: A boolean indicating the success of the user creation operation.
+ *       400:
+ *         description: Bad Request. Returns an error message if the user with the provided email already exists.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: An error message indicating the reason for the bad request.
+ *       500:
+ *         description: Internal Server Error. Returns an error message if something went wrong during the user creation process.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: An error message indicating the reason for the server error.
+ */
+
 export async function POST(request: NextRequest): Promise<
   | NextResponse<{
       message: string;
       success: boolean;
-      newUser: unknown;
     }>
   | NextResponse<{
       error: unknown;
@@ -35,7 +92,7 @@ export async function POST(request: NextRequest): Promise<
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
-    const newUser = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
@@ -46,7 +103,6 @@ export async function POST(request: NextRequest): Promise<
       {
         message: "User created successfully",
         success: true,
-        newUser,
       },
       { status: 201 }
     );

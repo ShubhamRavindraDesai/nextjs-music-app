@@ -119,24 +119,34 @@ const Nav = ({
             color="inherit"
             aria-label="open drawer"
             onClick={handleOpenDrawer}
-            sx={{ mr: 2, color: theme.palette.secondary.light }}
+            sx={{ mr: 2, color: "darkblue" }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            fontWeight={"600"}
+          <Box
             sx={{
-              paddingRight: "10px",
-              display: {
-                color: theme.palette.secondary.contrastText,
+              "@media (max-width: 500px)": {
+                display: "none",
               },
             }}
           >
-            Feel !t
-          </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              fontWeight={"600"}
+              sx={{
+                paddingRight: "10px",
+
+                display: {
+                  color: theme.palette.secondary.contrastText,
+                },
+              }}
+            >
+              Feel !t
+            </Typography>
+          </Box>
+
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

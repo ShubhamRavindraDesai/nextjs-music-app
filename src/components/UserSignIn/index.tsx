@@ -1,26 +1,50 @@
+"use client";
 import { BOXSHADOW_1 } from "@/src/constants";
 import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
+import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 
 interface UserSignInProps {
-  buttonDisabled: boolean;
-  loading: boolean;
-  user: {
-    email: string;
-    password: string;
-  };
-  setUser: ({ email, password }: { email: string; password: string }) => void;
-  onLogin: () => Promise<void>;
+  navigate: (path: string) => void;
 }
 
-const UserSignIn = ({
-  buttonDisabled,
-  loading,
-  user,
-  setUser,
-  onLogin,
-}: UserSignInProps): JSX.Element => {
+const UserSignIn = ({ navigate }: UserSignInProps): JSX.Element => {
+  const [user, setUser] = React.useState({
+    email: "",
+    password: "",
+  });
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const onLogin = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      await axios.post("/api/users/signin", user);
+
+      toast.success("Login success");
+      navigate("/songs");
+    } catch (err) {
+      const error = err as {
+        response: { data: { error: string } };
+        message: string;
+        status: number;
+      };
+      toast.error(error?.response?.data?.error || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user.email.length > 0 && user.password.length > 0) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [user]);
+
   return (
     <Box
       sx={{
