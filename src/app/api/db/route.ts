@@ -111,15 +111,13 @@ export const GET = async (
 ): Promise<NextResponse<{ data: string | null; err: string | null }>> => {
   try {
     const prisma = new PrismaClient();
-    const url = `https://itunes.apple.com/search/?term=${"term"}&offset=${"offset"}&limit=${25}`;
+    const url = `https://itunes.apple.com/search/?term=${"term"}&offset=${"offset"}&limit=${200}`;
 
     const response = await axios(url);
     const songs = response?.data?.results;
     const refinedSongs = refineSongsData(songs);
 
-    for (const song of refinedSongs) {
-      await prisma.song.create({ data: song });
-    }
+    await prisma.song.createMany({ data: refinedSongs });
 
     return NextResponse.json({ data: "success", err: null });
   } catch (err) {
