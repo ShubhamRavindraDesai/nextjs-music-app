@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
  * /api/video:
  *   get:
  *     summary: Search YouTube videos
- *     description: Returns video data from YouTube based on the provided search query.
+ *     description: Returns video data from YouTube based on the provided search query (e.g. "songs", "news"). name query parameter is optional default search "google".
  *     parameters:
  *       - in: query
  *         name: name

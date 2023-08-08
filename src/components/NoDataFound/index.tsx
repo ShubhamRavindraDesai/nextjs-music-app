@@ -13,8 +13,8 @@ const NoDataFound = (): JSX.Element => {
       flexDirection="column"
       sx={{
         position: "sticky",
-        top: "25%",
-        height: "40%",
+        top: "15%",
+        height: "60%",
         gap: "20px",
         boxShadow: BOXSHADOW_1,
       }}

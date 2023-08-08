@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
-import { Container } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import UserSignIn from "@/src/components/UserSignIn";
 
 export default function LoginPage(): JSX.Element {
@@ -14,16 +14,26 @@ export default function LoginPage(): JSX.Element {
       sx={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        position: "fixed",
-        top: "25%",
+        flexDirection: "column",
+        gap: "20px",
+        height: "100vh",
       }}
     >
-      <UserSignIn
-        navigate={(path) => {
-          router.push(path);
+      <Typography variant="h2">NextJS Music App</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          width: "100%",
         }}
-      />
+      >
+        <UserSignIn
+          navigate={(path) => {
+            router.push(path);
+          }}
+        />
+      </Box>
       <Toaster
         position="bottom-left"
         reverseOrder={false}
