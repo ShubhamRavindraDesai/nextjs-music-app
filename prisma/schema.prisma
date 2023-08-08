@@ -15,6 +15,7 @@ model User {
 
 model Song {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  songId                 Int    @unique
   name                   String
   imageUrl               String
   lowUrl                 String

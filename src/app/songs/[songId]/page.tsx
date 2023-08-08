@@ -12,13 +12,13 @@ export const revalidate = 60;
 
 export async function generateStaticParams(): Promise<
   Array<{
-    id: string;
+    songId: string;
   }>
 > {
   const songIds = await prisma.song.findMany();
   return songIds.map((song) => {
-    const id = song.id;
-    return { id };
+    const id = song.songId;
+    return { songId: String(id) };
   });
 }
 
@@ -30,7 +30,7 @@ const SongPage = async ({
   try {
     const songRes = await prisma.song.findFirst({
       where: {
-        id: { equals: params.songId },
+        songId: { equals: Number(params.songId) },
       },
     });
 
