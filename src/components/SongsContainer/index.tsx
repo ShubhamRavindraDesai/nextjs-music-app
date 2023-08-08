@@ -52,12 +52,8 @@ const SongsContainer = (): JSX.Element => {
     setScrollIsLoading(loading);
   };
   const changeOffset = (): void => {
-    setPage((prev) => {
-      return (prev += 1);
-    });
-    setSkip((prev) => {
-      return (prev += 25);
-    });
+    setPage(songs?.length / 25 + 1);
+    setSkip(page * 25);
   };
 
   useScroll({
@@ -73,7 +69,7 @@ const SongsContainer = (): JSX.Element => {
     void scrollAdd(page, skip);
     setScrollIsLoading(false);
     // eslint-disable-next-line
-  }, [page, search]);
+  }, [skip, search]);
 
   const skeletonArray: number[] = new Array(25).fill("");
 
