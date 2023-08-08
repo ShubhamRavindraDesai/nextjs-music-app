@@ -20,6 +20,13 @@ const StyledRootBox = styled(Box)`
   box-shadow: ${BOXSHADOW_1};
 `;
 
+const StyledBox = styled(Box)`
+  z-index: 9999;
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+`;
+
 export default function Layout(props: {
   children: React.ReactNode;
 }): JSX.Element {
@@ -31,16 +38,9 @@ export default function Layout(props: {
           <Nav navigate={router.push} />
         </StyledRootBox>
         {props.children}
-        <Box
-          sx={{
-            zIndex: "9999",
-            position: "fixed",
-            bottom: "0px",
-            width: "100%",
-          }}
-        >
+        <StyledBox>
           <SongPlayer />
-        </Box>
+        </StyledBox>
       </Provider>
     </div>
   );

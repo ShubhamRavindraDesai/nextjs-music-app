@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import SongPlayer from ".";
 import React from "react";
 
-const component = (): JSX.Element => {
+const componentSongPlayer = (): JSX.Element => {
   return (
     <Provider store={store}>
       <SongPlayer />
@@ -15,13 +15,13 @@ const component = (): JSX.Element => {
 
 const meta = {
   title: "Example/SongPlayer",
-  component: component,
+  component: componentSongPlayer,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   argTypes: {},
-} satisfies Meta<typeof component>;
+} satisfies Meta<typeof componentSongPlayer>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

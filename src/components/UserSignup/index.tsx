@@ -12,10 +12,22 @@ import {
 import React, { useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import styled from "@emotion/styled";
 
 interface UserSignupProps {
   navigate: (path: string) => void;
 }
+
+const StyledRootBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+  border-radius: 10px;
+  box-shadow: ${BOXSHADOW_1};
+  padding: 8px;
+`;
 
 const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
   const [user, setUser] = React.useState({
@@ -28,14 +40,10 @@ const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
   const onSignup = async (): Promise<void> => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/users/signup", user);
-      // eslint-disable-next-line no-console
-      console.log("Signup success", response.data);
+      await axios.post("/api/users/signup", user);
       navigate("/");
     } catch (err) {
       const error = err as { message: string; status: number };
-      // eslint-disable-next-line no-console
-      console.log("Signup failed", error.message);
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -52,19 +60,7 @@ const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
 
   return (
     <>
-      <Box
-        data-testid="signup-root"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          width: "100%",
-          gap: "20px",
-          borderRadius: "10px",
-          boxShadow: BOXSHADOW_1,
-          padding: "8px",
-        }}
-      >
+      <StyledRootBox data-testid="signup-root">
         <Typography data-testid="title">
           {loading ? "Processing" : "Signup"}
         </Typography>
@@ -117,7 +113,7 @@ const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
             Forgot Password
           </Link>
         </Box>
-      </Box>
+      </StyledRootBox>
     </>
   );
 };

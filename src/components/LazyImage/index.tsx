@@ -1,41 +1,19 @@
-"use client";
+import Image from "next/image";
+import React from "react";
 
-import { CardMedia } from "@mui/material";
-import React, { useEffect, useState } from "react";
-
-const LazyImage = ({
-  url,
-  lowUrl,
-}: {
-  url: string;
-  lowUrl: string;
-}): JSX.Element => {
-  const [imageData, setImageData] = useState(url);
-
-  useEffect(() => {
-    if (lowUrl) {
-      setImageData(lowUrl);
-      const image = new Image();
-      image.src = url;
-
-      image.onload = () => {
-        setImageData(url);
-      };
-    }
-  }, [url, lowUrl]);
-
+const LazyImage = ({ url }: { url: string }): JSX.Element => {
   return (
-    <CardMedia
+    <Image
       data-testid="card-media"
-      component={"img"}
-      src={imageData}
-      alt="S"
+      src={url}
+      alt="Song picture"
+      width={500}
+      height={200}
       loading="lazy"
-      sx={{
+      style={{
         width: "100%",
         height: "100%",
         borderRadius: "8px",
-        objectFit: "fill !important",
       }}
     />
   );

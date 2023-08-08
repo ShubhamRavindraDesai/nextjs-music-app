@@ -1,5 +1,6 @@
 "use client";
 import { BOXSHADOW_1 } from "@/src/constants";
+import styled from "@emotion/styled";
 import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
@@ -9,6 +10,16 @@ import toast from "react-hot-toast";
 interface UserSignInProps {
   navigate: (path: string) => void;
 }
+const StyledRootBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+  border-radius: 10px;
+  box-shadow: ${BOXSHADOW_1};
+  padding: 8px;
+`;
 
 const UserSignIn = ({ navigate }: UserSignInProps): JSX.Element => {
   const [user, setUser] = React.useState({
@@ -46,19 +57,7 @@ const UserSignIn = ({ navigate }: UserSignInProps): JSX.Element => {
   }, [user]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        width: "100%",
-        gap: "20px",
-        borderRadius: "10px",
-        boxShadow: BOXSHADOW_1,
-        padding: "8px",
-      }}
-      data-testid="signin-root"
-    >
+    <StyledRootBox data-testid="signin-root">
       <Typography>{loading ? "Processing" : "Login"}</Typography>
       <hr />
 
@@ -101,7 +100,7 @@ const UserSignIn = ({ navigate }: UserSignInProps): JSX.Element => {
           Forgot Password
         </Link>
       </Box>
-    </Box>
+    </StyledRootBox>
   );
 };
 

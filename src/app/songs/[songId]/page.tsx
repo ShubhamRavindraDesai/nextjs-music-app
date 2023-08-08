@@ -6,7 +6,6 @@ import { INITIAL_SONG } from "@/src/constants";
 import NoDataFound from "@/src/components/NoDataFound";
 import store from "@/src/ducks/store";
 import { setCurrentSong } from "@/src/reducers/SongReducer";
-const prisma = new PrismaClient();
 
 const SongPage = async ({
   params,
@@ -14,6 +13,7 @@ const SongPage = async ({
   params: { songId: string };
 }): Promise<JSX.Element> => {
   try {
+    const prisma = new PrismaClient();
     const songRes = await prisma.song.findFirst({
       where: {
         id: { equals: params.songId },

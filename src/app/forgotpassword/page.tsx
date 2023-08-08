@@ -3,35 +3,52 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Box, Container, Typography } from "@mui/material";
 import ForgotPassword from "@/src/components/ForgotPassword";
+import styled from "@emotion/styled";
+import { Toaster } from "react-hot-toast";
+
+const StyledContainer = styled(Container)`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  height: 100vh;
+`;
+
+const StyledBox = styled(Box)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+`;
 
 export default function ForgotPasswordPage(): React.JSX.Element {
   const router = useRouter();
 
   return (
-    <Container
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: "20px",
-        height: "100vh",
-      }}
-    >
+    <StyledContainer>
       <Typography variant="h3">NextJS Music App</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
+      <StyledBox>
         <ForgotPassword
           navigate={(path) => {
             router.push(path);
           }}
         />
-      </Box>
-    </Container>
+      </StyledBox>
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          className: "",
+          duration: 5000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
+    </StyledContainer>
   );
 }

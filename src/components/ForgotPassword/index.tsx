@@ -1,10 +1,22 @@
 "use client";
 import { BOXSHADOW_1 } from "@/src/constants";
+import styled from "@emotion/styled";
 import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
+
+const StlyedRootBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+  border-radius: 10px;
+  box-shadow: ${BOXSHADOW_1};
+  padding: 8px;
+`;
 
 interface ForgotPasswordProps {
   navigate: (path: string) => void;
@@ -39,21 +51,10 @@ export default function ForgotPassword({
       setButtonDisabled(true);
     }
   }, [user]);
+
   return (
     <>
-      <Box
-        data-testid="forgot-password-root-box"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          width: "100%",
-          gap: "20px",
-          borderRadius: "10px",
-          boxShadow: BOXSHADOW_1,
-          padding: "8px",
-        }}
-      >
+      <StlyedRootBox data-testid="forgot-password-root-box">
         <Typography data-testid="title">
           {loading ? "Processing" : "Forgot Password"}
         </Typography>
@@ -91,7 +92,7 @@ export default function ForgotPassword({
             Visit sign up page
           </Link>
         </Box>
-      </Box>
+      </StlyedRootBox>
     </>
   );
 }
