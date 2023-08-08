@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Container } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import UserSignup from "@/src/components/UserSignup";
 import { useRouter } from "next/navigation";
 
@@ -12,16 +12,26 @@ export default function SignupPage(): React.JSX.Element {
       sx={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        position: "fixed",
-        top: "25%",
+        flexDirection: "column",
+        gap: "20px",
+        height: "100vh",
       }}
     >
-      <UserSignup
-        navigate={(path) => {
-          router.push(path);
+      <Typography variant="h2">NextJS Music App</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          width: "100%",
         }}
-      />
+      >
+        <UserSignup
+          navigate={(path) => {
+            router.push(path);
+          }}
+        />
+      </Box>
     </Container>
   );
 }

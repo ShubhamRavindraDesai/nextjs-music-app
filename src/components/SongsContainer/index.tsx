@@ -147,10 +147,12 @@ const SongsContainer = (): JSX.Element => {
               );
             })}
         {isLoading && songs?.length ? renderSkelton() : <></>}
-        {!isLoading && !songs?.length && (
-          <Grid item xs={10} sm={10} md={10} lg={10}>
+        {!isLoading && !songs?.length ? (
+          <Grid item xs={12} sm={12} md={12} lg={12}>
             <NoDataFound />
           </Grid>
+        ) : (
+          <></>
         )}
       </Grid>
     </div>

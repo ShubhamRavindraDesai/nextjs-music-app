@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Container } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import ForgotPassword from "@/src/components/ForgotPassword";
 
 export default function ForgotPasswordPage(): React.JSX.Element {
@@ -12,17 +12,26 @@ export default function ForgotPasswordPage(): React.JSX.Element {
       sx={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        position: "fixed",
-        top: "25%",
+        flexDirection: "column",
+        gap: "20px",
+        height: "100vh",
       }}
     >
-      <ForgotPassword
-        navigate={(path) => {
-          router.push(path);
+      <Typography variant="h3">NextJS Music App</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          width: "100%",
         }}
-      />
+      >
+        <ForgotPassword
+          navigate={(path) => {
+            router.push(path);
+          }}
+        />
+      </Box>
     </Container>
   );
 }
