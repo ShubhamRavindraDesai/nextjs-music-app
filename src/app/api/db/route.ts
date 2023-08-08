@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -110,14 +110,14 @@ export const GET = async (
   req: Request
 ): Promise<NextResponse<{ data: string | null; err: string | null }>> => {
   try {
-    const prisma = new PrismaClient();
+    // const prisma = new PrismaClient();
     const url = `https://itunes.apple.com/search/?term=${"term"}&offset=${"offset"}&limit=${200}`;
 
     const response = await axios(url);
     const songs = response?.data?.results;
-    const refinedSongs = refineSongsData(songs);
+    refineSongsData(songs);
 
-    await prisma.song.createMany({ data: refinedSongs });
+    // await prisma.song.createMany({ data: refinedSongs });
 
     return NextResponse.json({ data: "success", err: null });
   } catch (err) {
