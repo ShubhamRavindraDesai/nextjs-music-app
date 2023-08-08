@@ -12,13 +12,13 @@ export const revalidate = 60;
 
 export async function generateStaticParams(): Promise<
   Array<{
-    id: string;
+    songId: string;
   }>
 > {
   const songIds = await prisma.song.findMany();
   return songIds.map((song) => {
     const id = song.id;
-    return { id };
+    return { songId: id };
   });
 }
 
