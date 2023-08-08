@@ -8,7 +8,7 @@ import dayjs from "dayjs";
  * /api/db:
  *   get:
  *     summary: Store data in the database
- *     description: Fetches song data from iTunes API based on the search term, refines and processes the data, and stores it in the database.
+ *     description: Fetches song data from iTunes API based on the search term, refines and processes the data, and stores it in the database. Search string can be(e.g., "Taylor Swift", "Imagine Dragons") and for the number of songs you want to skip we can pass the offset query parameter. if there are 50 songs are being fetched you can skip first 25 and only store remaining 25 songs will get stored in the database and offset is optional parameter(e.g., "25", "50").The limit is the third query parameter to limit the songs to get stored in database limit is optional query parameter (e.g., "25", "100").
  *     parameters:
  *       - in: query
  *         name: term

@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
  * /api/songs:
  *   get:
  *     summary: Get songs data
- *     description: Returns a list of songs from the database. You can search for songs by providing a search query parameter.
+ *     description: Returns a list of songs from the database. You can search for songs by providing a search query parameter (e.g. "Securing"). This is an optional parameter when its empty by default it will return first 25 songs. The skip parameter for the number of songs you want to skip from the start if there are 100 songs availale you can skip first 50 songs by providing the skip parameter it is optional parameter by default it will skip 0 number of songs (e.g. "25", "50").
  *     parameters:
  *       - in: query
  *         name: search
