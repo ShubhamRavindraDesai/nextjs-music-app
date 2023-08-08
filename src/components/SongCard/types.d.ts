@@ -1,5 +1,6 @@
 interface Song {
   id: string;
+  songId: number;
   updatedAt?: string;
   createdAt?: string;
   description: string;

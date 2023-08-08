@@ -5,35 +5,36 @@ import { useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 import { Box, Container, Typography } from "@mui/material";
 import UserSignIn from "@/src/components/UserSignIn";
+import styled from "@emotion/styled";
+
+const StyledContainer = styled(Container)`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  height: 100vh;
+`;
+
+const StyledBox = styled(Box)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+`;
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
 
   return (
-    <Container
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: "20px",
-        height: "100vh",
-      }}
-    >
+    <StyledContainer>
       <Typography variant="h2">NextJS Music App</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
+      <StyledBox>
         <UserSignIn
           navigate={(path) => {
             router.push(path);
           }}
         />
-      </Box>
+      </StyledBox>
       <Toaster
         position="bottom-left"
         reverseOrder={false}
@@ -49,6 +50,6 @@ export default function LoginPage(): JSX.Element {
           },
         }}
       />
-    </Container>
+    </StyledContainer>
   );
 }

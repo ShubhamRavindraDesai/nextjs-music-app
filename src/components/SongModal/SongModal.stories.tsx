@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import SongModal from ".";
 import React from "react";
 
-const component = (): JSX.Element => {
+const componentSongmodal = (): JSX.Element => {
   return (
     <Provider store={store}>
       <SongModal song={mockSong} songId={mockSong.id} />
@@ -15,13 +15,13 @@ const component = (): JSX.Element => {
 
 const meta = {
   title: "Example/SongModal",
-  component: component,
+  component: componentSongmodal,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   argTypes: {},
-} satisfies Meta<typeof component>;
+} satisfies Meta<typeof componentSongmodal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -5,6 +5,7 @@ export const DEFAULT_SONG_REQUEST_LIMIT = 25;
 
 export const mockSong = {
   id: "64c9d621773df1f97cfc7678",
+  songId: 2,
   name: " Securing America and Restoring Justice",
   imageUrl:
     "https://is1-ssl.mzstatic.com/image/thumb/Music/4a/5d/59/mzi.gmyalanw.jpg/500x500bb.jpg",
@@ -36,6 +37,7 @@ export const mockSong = {
 
 export const INITIAL_SONG: Song = {
   id: "",
+  songId: 0,
   name: "",
   previewUrl: "",
   artworkUrl100: "",
@@ -61,6 +63,7 @@ export const INITIAL_SONG: Song = {
 
 export const mockSongData: Song = {
   id: "",
+  songId: 0,
   name: "",
   previewUrl: "",
   artworkUrl100: "",

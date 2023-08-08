@@ -5,7 +5,6 @@ import Link from "next/link";
 interface NavigationProps {
   handleCloseDrawer: () => void;
 }
-// Work in Progress
 
 const SideBar = ({ handleCloseDrawer }: NavigationProps): JSX.Element => {
   const handleRedirect = (pathname: string): void => {

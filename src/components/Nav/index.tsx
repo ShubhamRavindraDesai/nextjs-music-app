@@ -44,8 +44,6 @@ const Nav = ({
       navigate("/login");
     } catch (err) {
       const error = err as { message: string; status: number };
-      // eslint-disable-next-line no-console
-      console.log(error.message);
       toast.error(error.message);
     }
   };

@@ -39,7 +39,7 @@ const SongModal = ({ song }: SongModalType): JSX.Element => {
     <StyledModelBox>
       <CardBox>
         <StyledImageBox>
-          <LazyImage url={song?.imageUrl ?? ""} lowUrl={song?.lowUrl ?? ""} />
+          <LazyImage url={song?.imageUrl ?? ""} />
         </StyledImageBox>
         <DetailsBox>
           <Typography component="h5" variant="h6" color="#334155">

@@ -17,7 +17,5 @@ type Story = StoryObj<typeof meta>;
 export const LazyImagePrimary: Story = {
   args: {
     url: "https://is1-ssl.mzstatic.com/image/thumb/Music/4a/5d/59/mzi.gmyalanw.jpg/500x500bb.jpg",
-    lowUrl:
-      "https://is1-ssl.mzstatic.com/image/thumb/Music/4a/5d/59/mzi.gmyalanw.jpg/10x10bb.jpg",
   },
 };

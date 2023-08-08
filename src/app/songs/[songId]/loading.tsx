@@ -29,14 +29,11 @@ const SongModalLoader = (): JSX.Element => {
             <Skeleton width="80%">
               <FiberManualRecordIcon fontSize="small" color="info" />
             </Skeleton>
-
             <Skeleton width="100%" />
             <Skeleton width="100%" />
             <Skeleton width="100%" />
             <Skeleton width="100%" />
-
             <Skeleton height={"60px"} width="150px" />
-
             <Button
               sx={{
                 backgroundColor: "#E72C30 !important",
