@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { Box, Container, Typography } from "@mui/material";
 import ForgotPassword from "@/src/components/ForgotPassword";
 import styled from "@emotion/styled";
-import { Toaster } from "react-hot-toast";
 
 const StyledContainer = styled(Container)`
   display: flex;
@@ -34,21 +33,6 @@ export default function ForgotPasswordPage(): React.JSX.Element {
           }}
         />
       </StyledBox>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-        gutter={8}
-        containerClassName=""
-        containerStyle={{}}
-        toastOptions={{
-          className: "",
-          duration: 5000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
     </StyledContainer>
   );
 }
