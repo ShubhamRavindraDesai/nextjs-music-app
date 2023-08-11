@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Toaster } from "react-hot-toast";
 import { Box, Container, Typography } from "@mui/material";
 import UserSignIn from "@/src/components/UserSignIn";
 import styled from "@emotion/styled";
@@ -24,32 +23,18 @@ const StyledBox = styled(Box)`
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
+  const navigate = (path: string): void => {
+    router.push(path);
+  };
 
   return (
-    <StyledContainer>
-      <Typography variant="h2">NextJS Music App</Typography>
-      <StyledBox>
-        <UserSignIn
-          navigate={(path) => {
-            router.push(path);
-          }}
-        />
+    <StyledContainer data-testid="login-page">
+      <Typography data-testid="heading" variant="h2">
+        NextJS Music App
+      </Typography>
+      <StyledBox data-testid="user-signin-comp">
+        <UserSignIn navigate={navigate} />
       </StyledBox>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-        gutter={8}
-        containerClassName=""
-        containerStyle={{}}
-        toastOptions={{
-          className: "",
-          duration: 5000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
     </StyledContainer>
   );
 }

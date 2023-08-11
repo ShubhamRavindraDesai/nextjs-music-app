@@ -1,11 +1,10 @@
 "use client";
 import { BOXSHADOW_1 } from "@/src/constants";
 import styled from "@emotion/styled";
-import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
-import axios from "axios";
+import { Box, Typography, InputLabel, Button } from "@mui/material";
 import Link from "next/link";
-import React, { useEffect } from "react";
-import toast from "react-hot-toast";
+import React from "react";
+import InputField from "../atoms/Input";
 
 const StlyedRootBox = styled(Box)`
   display: flex;
@@ -19,39 +18,22 @@ const StlyedRootBox = styled(Box)`
 `;
 
 interface ForgotPasswordProps {
-  navigate: (path: string) => void;
+  user: {
+    email: string;
+  };
+  setUser: (user: { email: string }) => void;
+  loading: boolean;
+  buttonDisabled: boolean;
+  onForgotPassword: () => Promise<void>;
 }
 
 export default function ForgotPassword({
-  navigate,
+  user,
+  setUser,
+  loading,
+  buttonDisabled,
+  onForgotPassword,
 }: ForgotPasswordProps): JSX.Element {
-  const [user, setUser] = React.useState({
-    email: "",
-  });
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-
-  const onForgotPassword = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      await axios.post("/api/users/forgotpassword", user);
-      navigate("/");
-    } catch (err) {
-      const error = err as { message: string; status: number };
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (user.email.length > 0) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [user]);
-
   return (
     <>
       <StlyedRootBox data-testid="forgot-password-root-box">
@@ -62,8 +44,8 @@ export default function ForgotPassword({
         <InputLabel data-testid="email-label" htmlFor="email">
           email
         </InputLabel>
-        <TextField
-          data-testid="email-input"
+        <InputField
+          dataTestId="email-input"
           id="email"
           type="text"
           value={user.email}
@@ -72,9 +54,8 @@ export default function ForgotPassword({
           ) => {
             setUser({ ...user, email: e.target.value });
           }}
-          placeholder="email"
+          placeholder="Email"
         />
-
         <Button
           data-testid="forgot-password-button"
           onClick={() => {

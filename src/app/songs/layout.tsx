@@ -1,12 +1,10 @@
 "use client";
-
-import Nav from "@/components/Nav";
-import SongPlayer from "@/components/SongPlayer";
+import Footer from "@/src/components/Footer";
+import Header from "@/src/components/Header";
 import { BOXSHADOW_1 } from "@/src/constants";
 import store from "@/src/ducks/store";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { Provider } from "react-redux";
 
@@ -30,16 +28,15 @@ const StyledBox = styled(Box)`
 export default function Layout(props: {
   children: React.ReactNode;
 }): JSX.Element {
-  const router = useRouter();
   return (
     <div>
       <Provider store={store}>
         <StyledRootBox>
-          <Nav navigate={router.push} />
+          <Header />
         </StyledRootBox>
         {props.children}
         <StyledBox>
-          <SongPlayer />
+          <Footer />
         </StyledBox>
       </Provider>
     </div>

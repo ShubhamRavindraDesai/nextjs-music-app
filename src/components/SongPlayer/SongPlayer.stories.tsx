@@ -1,4 +1,4 @@
-import { mockSong } from "@/src/constants";
+import { INITIAL_SONG, mockSong } from "@/src/constants";
 import store from "@/src/ducks/store";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Provider } from "react-redux";
@@ -8,7 +8,34 @@ import React from "react";
 const componentSongPlayer = (): JSX.Element => {
   return (
     <Provider store={store}>
-      <SongPlayer />
+      <SongPlayer
+        currentSong={INITIAL_SONG}
+        volume={0}
+        handlePrevButtonClick={() => {
+          ("");
+        }}
+        togglePlay={() => {
+          ("");
+        }}
+        isPlaying={false}
+        handleNextButtonClick={() => {
+          ("");
+        }}
+        trackTime={0}
+        handleTrackChange={function (newValue: number | number[]): void {
+          ("");
+        }}
+        handleVolumeChange={function (newValue: number): void {
+          ("");
+        }}
+        toggleVolume={() => {
+          ("");
+        }}
+        audioRef={undefined}
+        updateTime={() => {
+          ("");
+        }}
+      />
     </Provider>
   );
 };

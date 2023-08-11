@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Container, Typography } from "@mui/material";
 import ForgotPassword from "@/src/components/ForgotPassword";
 import styled from "@emotion/styled";
-import { Toaster } from "react-hot-toast";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const StyledContainer = styled(Container)`
   display: flex;
@@ -23,32 +24,48 @@ const StyledBox = styled(Box)`
 
 export default function ForgotPasswordPage(): React.JSX.Element {
   const router = useRouter();
+  const [user, setUser] = React.useState({
+    email: "",
+  });
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const onForgotPassword = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      await axios.post("/api/users/forgotpassword", user);
+      router.push("/");
+    } catch (err) {
+      const error = err as { message: string; status: number };
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const setEmail = (user: { email: string }): void => {
+    setUser(user);
+  };
+
+  useEffect(() => {
+    if (user.email.length > 0) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [user]);
 
   return (
     <StyledContainer>
       <Typography variant="h3">NextJS Music App</Typography>
       <StyledBox>
         <ForgotPassword
-          navigate={(path) => {
-            router.push(path);
-          }}
+          user={user}
+          setUser={setEmail}
+          loading={loading}
+          buttonDisabled={buttonDisabled}
+          onForgotPassword={onForgotPassword}
         />
       </StyledBox>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-        gutter={8}
-        containerClassName=""
-        containerStyle={{}}
-        toastOptions={{
-          className: "",
-          duration: 5000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
     </StyledContainer>
   );
 }

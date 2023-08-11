@@ -1,18 +1,12 @@
 "use client";
 
 import { BOXSHADOW_1 } from "@/src/constants";
-import {
-  Box,
-  Button,
-  InputLabel,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, InputLabel, Link, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import styled from "@emotion/styled";
+import InputField from "@/src/components/atoms/Input";
 
 interface UserSignupProps {
   navigate: (path: string) => void;
@@ -41,12 +35,12 @@ const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
     try {
       setLoading(true);
       await axios.post("/api/users/signup", user);
-      navigate("/");
     } catch (err) {
       const error = err as { message: string; status: number };
       toast.error(error.message);
     } finally {
       setLoading(false);
+      navigate("/");
     }
   };
 
@@ -68,8 +62,8 @@ const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
         <InputLabel data-testid="email-label" htmlFor="email">
           email
         </InputLabel>
-        <TextField
-          data-testid="email-input"
+        <InputField
+          dataTestId="email-input"
           id="email"
           type="text"
           value={user.email}
@@ -83,8 +77,8 @@ const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
         <InputLabel data-testid="password-label" htmlFor="password">
           password
         </InputLabel>
-        <TextField
-          data-testid="password-input"
+        <InputField
+          dataTestId="password-input"
           id="password"
           type="password"
           value={user.password}
