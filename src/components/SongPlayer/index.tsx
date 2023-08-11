@@ -106,7 +106,7 @@ const SongPlayer = (props: SongPlayerProps): JSX.Element => {
           <CustomSlider
             dataTestId="track-slider"
             size="small"
-            style={{ width: "70%" }}
+            style={{ width: "100%" }}
             value={Number(trackTime)}
             onChange={(_: Event, newValue: number | number[]) => {
               handleTrackChange(newValue);
