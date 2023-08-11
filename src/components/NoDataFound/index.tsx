@@ -22,7 +22,7 @@ const NoDataFound = (): JSX.Element => {
     >
       <Typography data-testid="info-text">No songs Found</Typography>
       <Box data-testid="no-data-svg">
-        <Image priority src={NoDataSvg} alt="Picture of files" />
+        <Image src={NoDataSvg} alt="Picture of files" />
       </Box>
     </Box>
   );

@@ -29,7 +29,8 @@ describe("Input field test cases", () => {
     };
     render(<InputField {...mockProps} />);
 
-    const inputEl = screen.getByPlaceholderText("Email");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const inputEl: any = screen.getByPlaceholderText("Email");
     expect(inputEl.value).toBe("shubham");
   });
   it("should render passed value", async () => {

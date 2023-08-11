@@ -15,5 +15,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const ForgotPasswordPrimary: Story = {
-  args: {},
+  args: {
+    user: {
+      email: "shubham@gmail.com",
+    },
+    setUser: (user) => {
+      ("");
+    },
+    loading: false,
+    buttonDisabled: false,
+    onForgotPassword: async () => {
+      ("");
+    },
+  },
 };
