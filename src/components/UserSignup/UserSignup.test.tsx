@@ -1,111 +1,72 @@
 import UserSignup from "@/src/components/UserSignup";
 import "@testing-library/jest-dom";
-import { fireEvent, render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 
 describe("user sign up component", () => {
-  it("should renders UserSignup with all inner components", () => {
-    const { getByTestId } = render(
+  it("should renders UserSignup with initial state", () => {
+    render(
       <UserSignup
-        navigate={(path) => {
+        navigate={() => {
           ("");
         }}
       />
     );
 
-    const rootElement = getByTestId("signup-root");
-    const titleElement = getByTestId("title");
-    const emailLabelElement = getByTestId("email-label");
-    const emailInputElement = getByTestId("email-input");
-    const passwordLabelElement = getByTestId("password-label");
-    const passwordInputElement = getByTestId("password-input");
-    const signupButtonElement = getByTestId("password-input");
-    const signupPageButton = getByTestId("signup-page-button");
-    const forgotPasswordPageButton = getByTestId("forgot-password-page-button");
+    const rootElement = screen.getByTestId("signup-root");
+    const emailInput = screen.getByTestId("email-input");
+    const passwordInput = screen.getByTestId("password-input");
+    const signupButton = screen.getByTestId("signup-button");
+    const loginPageButton = screen.getByTestId("login-page-button");
+    const forgotPasswordPageButton = screen.getByTestId(
+      "forgot-password-page-button"
+    );
 
-    const elements = [
-      rootElement,
-      titleElement,
-      emailLabelElement,
-      emailInputElement,
-      passwordLabelElement,
-      passwordInputElement,
-      signupButtonElement,
-      forgotPasswordPageButton,
-      signupPageButton,
-    ];
-    elements.forEach((element) => {
-      expect(element).toBeInTheDocument();
-    });
+    expect(rootElement).toBeInTheDocument();
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(signupButton).toBeInTheDocument();
+    expect(loginPageButton).toBeInTheDocument();
+    expect(forgotPasswordPageButton).toBeInTheDocument();
   });
-  it("button should be disabled when the values are empty", () => {
-    const { getByText } = render(
+
+  it("should displays validation error for empty email and password fields", async () => {
+    render(
       <UserSignup
-        navigate={(path) => {
+        navigate={() => {
           ("");
         }}
       />
     );
-    const signupPageButton = getByText("No signup");
-    expect(signupPageButton).toBeInTheDocument();
-  });
-  it("on signup click ", () => {
-    const { getByText } = render(
-      <UserSignup
-        navigate={(path) => {
-          ("");
-        }}
-      />
-    );
-    const signupPageButton = getByText("No signup");
-    expect(signupPageButton).toBeInTheDocument();
-  });
-  it("should check when onSignup button clicked Signup text will changed to Proccesing", async () => {
-    const { getByPlaceholderText, getByText, getByTestId } = render(
-      <UserSignup
-        navigate={(path) => {
-          ("");
-        }}
-      />
-    );
-    const emailInputElement = getByPlaceholderText("email");
-    const passwordInputElement = getByPlaceholderText("password");
-    expect(emailInputElement).toBeInTheDocument();
-    expect(passwordInputElement).toBeInTheDocument();
 
-    fireEvent.change(emailInputElement, {
-      target: { value: "example@gmail.com" },
-    });
-    fireEvent.change(passwordInputElement, { target: { value: "Pass@123" } });
+    const signupButton = screen.getByTestId("signup-button");
 
-    const signupPageButton = getByTestId("signup-button");
-    await userEvent.click(signupPageButton);
+    fireEvent.click(signupButton);
 
-    const titleButton = getByText("Processing");
-    expect(titleButton).toBeInTheDocument();
+    const emailError = await screen.findByText("Email is required");
+    const passwordError = await screen.findByText("Password is required");
+
+    expect(emailError).toBeInTheDocument();
+    expect(passwordError).toBeInTheDocument();
   });
 
-  it("should call the navigate function when onSignup button clicked", async () => {
-    const mockFn = jest.fn(() => {
-      ("");
-    });
+  it("should displays validation error for invalid email format", async () => {
     const { getByPlaceholderText, getByTestId } = render(
-      <UserSignup navigate={mockFn} />
+      <UserSignup
+        navigate={() => {
+          ("");
+        }}
+      />
     );
-    const emailInputElement = getByPlaceholderText("email");
-    const passwordInputElement = getByPlaceholderText("password");
-    expect(emailInputElement).toBeInTheDocument();
-    expect(passwordInputElement).toBeInTheDocument();
 
-    fireEvent.change(emailInputElement, {
-      target: { value: "example@gmail.com" },
-    });
-    fireEvent.change(passwordInputElement, { target: { value: "Pass@123" } });
+    const emailInput = getByPlaceholderText("Email");
+    const signupButton = getByTestId("signup-button");
 
-    const signupPageButton = getByTestId("signup-button");
-    await userEvent.click(signupPageButton);
+    fireEvent.change(emailInput, { target: { value: "invalidemail" } });
+    fireEvent.click(signupButton);
 
-    expect(mockFn).toBeCalled();
+    const emailError = await screen.findByText("Invalid email format");
+
+    expect(emailError).toBeInTheDocument();
   });
 });

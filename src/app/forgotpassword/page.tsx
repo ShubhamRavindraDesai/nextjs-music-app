@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { Box, Container, Typography } from "@mui/material";
 import ForgotPassword from "@/src/components/ForgotPassword";
@@ -24,47 +24,22 @@ const StyledBox = styled(Box)`
 
 export default function ForgotPasswordPage(): React.JSX.Element {
   const router = useRouter();
-  const [user, setUser] = React.useState({
-    email: "",
-  });
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
 
-  const onForgotPassword = async (): Promise<void> => {
+  const onForgotPassword = async (values: { email: string }): Promise<void> => {
     try {
-      setLoading(true);
-      await axios.post("/api/users/forgotpassword", user);
+      await axios.post("/api/users/forgotpassword", values);
       router.push("/");
     } catch (err) {
       const error = err as { message: string; status: number };
       toast.error(error.message);
-    } finally {
-      setLoading(false);
     }
   };
-  const setEmail = (user: { email: string }): void => {
-    setUser(user);
-  };
-
-  useEffect(() => {
-    if (user.email.length > 0) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [user]);
 
   return (
     <StyledContainer>
       <Typography variant="h3">NextJS Music App</Typography>
       <StyledBox>
-        <ForgotPassword
-          user={user}
-          setUser={setEmail}
-          loading={loading}
-          buttonDisabled={buttonDisabled}
-          onForgotPassword={onForgotPassword}
-        />
+        <ForgotPassword onForgotPassword={onForgotPassword} />
       </StyledBox>
     </StyledContainer>
   );

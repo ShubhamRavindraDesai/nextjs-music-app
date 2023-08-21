@@ -1,7 +1,6 @@
 "use client";
 
 import SongPlayer from "@/components/SongPlayer";
-import store from "@/src/ducks/store";
 import { setPlay, setCurrentSong } from "@/src/reducers/SongReducer";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
