@@ -2,14 +2,12 @@
 import { BOXSHADOW_1 } from "@/src/constants";
 import styled from "@emotion/styled";
 import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
-import axios from "axios";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import toast from "react-hot-toast";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { validationSchema } from "./helper";
 
-interface UserSignInProps {
-  navigate: (path: string) => void;
-}
 const StyledRootBox = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -20,19 +18,28 @@ const StyledRootBox = styled(Box)`
   box-shadow: ${BOXSHADOW_1};
   padding: 8px;
 `;
+const StyledErrorMessage = styled(ErrorMessage)`
+  color: red !important;
+  font-size: 14px;
+  margin-top: 4px;
+`;
 
 const UserSignIn = ({ navigate }: UserSignInProps): JSX.Element => {
-  const [user, setUser] = React.useState({
-    email: "",
-    password: "",
-  });
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  const onLogin = async (): Promise<void> => {
+  const onLogin = async (values: {
+    email: string;
+    password: string;
+  }): Promise<void> => {
     try {
       setLoading(true);
-      await axios.post("/api/users/signin", user);
+      await fetch("/api/users/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
       toast.success("Login success");
       navigate("/songs");
@@ -48,59 +55,67 @@ const UserSignIn = ({ navigate }: UserSignInProps): JSX.Element => {
     }
   };
 
-  useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [user]);
-
   return (
-    <StyledRootBox data-testid="signin-root">
-      <Typography>{loading ? "Processing" : "Login"}</Typography>
-      <hr />
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      validationSchema={validationSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        await onLogin(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ isSubmitting }) => (
+        <Form style={{ width: "100%" }}>
+          <StyledRootBox data-testid="signin-root">
+            <Typography>{loading ? "Processing" : "Login"}</Typography>
+            <hr />
 
-      <InputLabel htmlFor="email">email</InputLabel>
-      <TextField
-        data-testid="email-input"
-        id="email"
-        type="text"
-        value={user.email}
-        onChange={(e) => {
-          setUser({ ...user, email: e.target.value });
-        }}
-        placeholder="email"
-      ></TextField>
-      <InputLabel htmlFor="password">password</InputLabel>
-      <TextField
-        data-testid="password-input"
-        id="password"
-        type="password"
-        value={user.password}
-        onChange={(e) => {
-          setUser({ ...user, password: e.target.value });
-        }}
-        placeholder="password"
-      ></TextField>
-      <Button
-        data-testid="login-button"
-        onClick={() => {
-          void onLogin();
-        }}
-        disabled={buttonDisabled}
-      >
-        Login here
-      </Button>
-      <Box display={"flex"} justifyContent="space-between">
-        <Link data-testid="signup-page-button" href="/signup">
-          Visit Signup page
-        </Link>
-        <Link data-testid="forgot-password-page-button" href="/forgotpassword">
-          Forgot Password
-        </Link>
-      </Box>
-    </StyledRootBox>
+            <InputLabel htmlFor="email">Email</InputLabel>
+            <Field
+              data-testid="email-input"
+              type="text"
+              name="email"
+              as={TextField}
+              placeholder="Email"
+            />
+            <div style={{ color: "red" }}>
+              <StyledErrorMessage name="email" />
+            </div>
+
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <Field
+              data-testid="password-input"
+              type="password"
+              name="password"
+              as={TextField}
+              placeholder="Password"
+            />
+            <div style={{ color: "red" }}>
+              <StyledErrorMessage name="password" />
+            </div>
+
+            <Button
+              data-testid="login-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Logging in..." : "Login here"}
+            </Button>
+            <Box display={"flex"} justifyContent="space-between">
+              <Link data-testid="signup-page-button" href="/signup">
+                Visit Signup page
+              </Link>
+              <Link
+                data-testid="forgot-password-page-button"
+                href="/forgotpassword"
+              >
+                Forgot Password
+              </Link>
+            </Box>
+          </StyledRootBox>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

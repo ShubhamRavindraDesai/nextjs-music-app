@@ -9,14 +9,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { toast } from "react-hot-toast";
 import styled from "@emotion/styled";
-
-interface UserSignupProps {
-  navigate: (path: string) => void;
-}
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { validationSchema } from "./helper";
 
 const StyledRootBox = styled(Box)`
   display: flex;
@@ -29,92 +26,103 @@ const StyledRootBox = styled(Box)`
   padding: 8px;
 `;
 
+const StyledErrorMessage = styled(ErrorMessage)`
+  color: red !important;
+  font-size: 14px;
+  margin-top: 4px;
+`;
+
 const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
-  const [user, setUser] = React.useState({
-    email: "",
-    password: "",
-  });
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  const onSignup = async (): Promise<void> => {
+  const onSignup = async (values: {
+    email: string;
+    password: string;
+  }): Promise<void> => {
     try {
       setLoading(true);
-      await axios.post("/api/users/signup", user);
-      navigate("/");
+      await fetch("/api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      toast.success("Signup success");
     } catch (err) {
-      const error = err as { message: string; status: number };
-      toast.error(error.message);
+      const error = err as {
+        response: { data: { error: string } };
+        message: string;
+        status: number;
+      };
+      toast.error(error?.response?.data?.error || error.message);
     } finally {
       setLoading(false);
+      navigate("/");
     }
   };
 
-  useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [user]);
-
   return (
-    <>
-      <StyledRootBox data-testid="signup-root">
-        <Typography data-testid="title">
-          {loading ? "Processing" : "Signup"}
-        </Typography>
-        <hr />
-        <InputLabel data-testid="email-label" htmlFor="email">
-          email
-        </InputLabel>
-        <TextField
-          data-testid="email-input"
-          id="email"
-          type="text"
-          value={user.email}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => {
-            setUser({ ...user, email: e.target.value });
-          }}
-          placeholder="email"
-        />
-        <InputLabel data-testid="password-label" htmlFor="password">
-          password
-        </InputLabel>
-        <TextField
-          data-testid="password-input"
-          id="password"
-          type="password"
-          value={user.password}
-          onChange={(e) => {
-            setUser({ ...user, password: e.target.value });
-          }}
-          placeholder="password"
-        />
-        <Button
-          data-testid="signup-button"
-          onClick={() => {
-            void onSignup();
-          }}
-          disabled={buttonDisabled}
-        >
-          {buttonDisabled ? "No signup" : "Signup"}
-        </Button>
-        <Box display={"flex"} justifyContent="space-between">
-          <Link data-testid="signup-page-button" href="/">
-            Visit login page
-          </Link>
-          <Link
-            data-testid="forgot-password-page-button"
-            href="/forgotpassword"
-          >
-            Forgot Password
-          </Link>
-        </Box>
-      </StyledRootBox>
-    </>
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      validationSchema={validationSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        await onSignup(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ isSubmitting }) => (
+        <Form style={{ width: "100%" }}>
+          <StyledRootBox data-testid="signup-root">
+            <Typography>{loading ? "Processing" : "Signup"}</Typography>
+            <hr />
+
+            <InputLabel htmlFor="email">Email</InputLabel>
+            <Field
+              data-testid="email-input"
+              type="text"
+              name="email"
+              as={TextField}
+              placeholder="Email"
+            />
+            <div style={{ color: "red" }}>
+              <StyledErrorMessage name="email" />
+            </div>
+
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <Field
+              data-testid="password-input"
+              type="password"
+              name="password"
+              as={TextField}
+              placeholder="Password"
+            />
+            <div style={{ color: "red" }}>
+              <StyledErrorMessage name="password" />
+            </div>
+
+            <Button
+              data-testid="signup-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Signing up..." : "Signup"}
+            </Button>
+            <Box display={"flex"} justifyContent="space-between">
+              <Link data-testid="login-page-button" href="/">
+                Visit login page
+              </Link>
+              <Link
+                data-testid="forgot-password-page-button"
+                href="/forgotpassword"
+              >
+                Forgot Password
+              </Link>
+            </Box>
+          </StyledRootBox>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

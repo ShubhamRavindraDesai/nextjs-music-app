@@ -1,97 +1,32 @@
 "use client";
 
-import {
-  Box,
-  CardMedia,
-  IconButton,
-  Skeleton,
-  Slider,
-  Typography,
-} from "@mui/material";
-import React, { useState, useEffect, useRef } from "react";
+import { Box, CardMedia, IconButton, Typography } from "@mui/material";
+import React from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import { StyledBox, StyledRootBox, StyledVolumeButtonBox } from "./style";
-import { setCurrentSong, setPlay } from "@/reducers/SongReducer";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import { sliceText } from "@/utils/GlobalFuntions";
-import { useDispatch, useSelector } from "react-redux";
+import { sliceText } from "@/src/utils/GlobalFuntions";
+import CustomSlider from "@/src/components/atoms/Slider";
 
-const SongPlayer = (): JSX.Element => {
+const SongPlayer = (props: SongPlayerProps): JSX.Element => {
   const {
-    songs,
     currentSong,
-    songAction: { isPlaying },
-  } = useSelector(({ song }: { song: SongStoreType }) => song);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  const [volume, setVolume] = useState(50);
-  const [trackTime, setTrackTime] = useState(0);
-  const [firstRender, setFirstRender] = useState(true);
-  const dispatch = useDispatch();
-
-  // Functions
-  const togglePlayback = (): void => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch((error) => {
-          // eslint-disable-next-line no-console
-          console.log("Autoplay prevented:", error);
-        });
-      } else if (!isPlaying) {
-        audioRef.current.pause();
-      }
-    }
-  };
-
-  const togglePlay = (): void => {
-    if (audioRef.current) {
-      if (audioRef.current.paused || !isPlaying) {
-        dispatch(setPlay({ isPlaying: true }));
-      } else if (!audioRef.current.paused || isPlaying) {
-        dispatch(setPlay({ isPlaying: false }));
-      }
-    }
-  };
-
-  const handleVolumeChange = (newValue: number): void => {
-    setVolume(newValue);
-    if (audioRef.current) {
-      audioRef.current.volume = newValue / 100;
-    }
-  };
-
-  const toggleVolume = (): void => {
-    setVolume((volume) => (volume <= 0 ? 50 : 0));
-  };
-
-  const handlePrevButtonClick = (): void => {
-    const isPrevSong = (song: Song): boolean => song?.id === currentSong?.id;
-    const currentSongIndex = songs?.findIndex(isPrevSong);
-    const prevSong =
-      songs[currentSongIndex > 0 ? currentSongIndex - 1 : songs?.length - 1];
-    dispatch(setCurrentSong({ currentSong: prevSong }));
-  };
-
-  const handleNextButtonClick = (): void => {
-    const isNextSong = (song: Song): boolean => song?.id === currentSong?.id;
-    const currentSongIndex = songs?.findIndex(isNextSong);
-    const prevSong =
-      songs[currentSongIndex < songs.length - 1 ? currentSongIndex + 1 : 0];
-    dispatch(setCurrentSong({ currentSong: prevSong }));
-  };
-
-  useEffect(() => {
-    if (firstRender) {
-      setFirstRender(false);
-    } else {
-      togglePlayback();
-    }
-    // eslint-disable-next-line
-  }, [currentSong?.previewUrl, isPlaying]);
+    volume,
+    handlePrevButtonClick,
+    togglePlay,
+    isPlaying,
+    handleNextButtonClick,
+    trackTime,
+    handleTrackChange,
+    handleVolumeChange,
+    toggleVolume,
+    audioRef,
+    updateTime,
+  } = props;
 
   return (
     <StyledRootBox data-testid="song-player-root">
@@ -103,33 +38,21 @@ const SongPlayer = (): JSX.Element => {
           gap="20px"
           width={"40%"}
         >
-          {currentSong?.artworkUrl100 ? (
-            <CardMedia
-              data-test-id="image"
-              component="img"
-              sx={{
-                width: "50px !important",
-                height: "50px !important",
-                borderRadius: "10px",
-                objectFit: "fill !important",
-              }}
-              image={currentSong?.artworkUrl100}
-              alt="S"
-            ></CardMedia>
-          ) : (
-            <Skeleton data-testid="image-skeleton" height="86px" width="50px" />
-          )}
-          {currentSong?.name || currentSong?.artistName ? (
-            <Typography data-testid="song-name">
-              {sliceText(currentSong?.name || currentSong?.artistName)}
-            </Typography>
-          ) : (
-            <Skeleton
-              data-testid="song-name-skeleton"
-              height="40px"
-              width="70px"
-            />
-          )}
+          <CardMedia
+            data-testid="image"
+            component="img"
+            sx={{
+              width: "50px !important",
+              height: "50px !important",
+              borderRadius: "10px",
+              objectFit: "fill !important",
+            }}
+            image={currentSong?.artworkUrl100}
+            alt="S"
+          ></CardMedia>
+          <Typography data-testid="song-name">
+            {sliceText(currentSong?.name || currentSong?.artistName)}
+          </Typography>
         </Box>
 
         <Box
@@ -152,10 +75,14 @@ const SongPlayer = (): JSX.Element => {
               gap: "20px",
             }}
           >
-            <IconButton onClick={handlePrevButtonClick}>
+            <IconButton
+              data-testid="prev-button"
+              onClick={handlePrevButtonClick}
+            >
               <SkipPreviousIcon />
             </IconButton>
             <IconButton
+              data-testid="play-button"
               onClick={togglePlay}
               size={"small"}
               sx={{
@@ -163,66 +90,57 @@ const SongPlayer = (): JSX.Element => {
                 color: "#ffffff",
               }}
             >
-              {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+              {isPlaying ? (
+                <PauseIcon data-testid="pause-icon" />
+              ) : (
+                <PlayArrowIcon data-testid="play-icon" />
+              )}
             </IconButton>
-            <IconButton onClick={handleNextButtonClick}>
+            <IconButton
+              data-testid="next-button"
+              onClick={handleNextButtonClick}
+            >
               <SkipNextIcon />
             </IconButton>
           </Box>
-          <Slider
-            sx={{
-              width: "100%",
-              color: "#082f49",
-              "@media (max-width: 500px)": {
-                display: "none",
-              },
-            }}
+          <CustomSlider
+            dataTestId="track-slider"
             size="small"
+            style={{ width: "100%" }}
             value={Number(trackTime)}
-            onChange={(_, newValue) => {
-              if (audioRef?.current) {
-                audioRef.current.currentTime = Number(newValue);
-              }
+            onChange={(_: Event, newValue: number | number[]) => {
+              handleTrackChange(newValue);
             }}
             min={0}
-            max={Number(audioRef.current?.duration) || 0}
-            aria-label="track slider"
+            max={100}
+            ariaLabel="Track slider"
           />
         </Box>
       </StyledBox>
-      <StyledVolumeButtonBox data-testid="volume-slider">
+      <StyledVolumeButtonBox data-testid="volume-box">
         {volume <= 0 ? (
           <VolumeOffIcon onClick={toggleVolume} />
         ) : (
           <VolumeUpIcon sx={{ cursor: "pointer" }} onClick={toggleVolume} />
         )}
-        <Slider
-          sx={{ width: "70%", color: "#0c4a6e" }}
+        <CustomSlider
           size="small"
+          style={{ width: "70%", color: "#0c4a6e" }}
           value={volume}
           onChange={(_, newValue) => {
             handleVolumeChange(newValue as number);
           }}
           min={0}
           max={100}
-          aria-label="Volume slider"
+          ariaLabel="Volume slider"
+          dataTestId={"volume-slider"}
         />
       </StyledVolumeButtonBox>
       <audio
         data-testid="audio-el"
         ref={audioRef}
         src={currentSong?.previewUrl || ""}
-        onTimeUpdate={() => {
-          if (audioRef.current) {
-            setTrackTime(Number(audioRef.current?.currentTime));
-          }
-          if (
-            Number(audioRef.current?.currentTime) ===
-            Number(audioRef.current?.duration)
-          ) {
-            handleNextButtonClick();
-          }
-        }}
+        onTimeUpdate={updateTime}
       />
     </StyledRootBox>
   );

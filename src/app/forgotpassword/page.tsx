@@ -1,54 +1,50 @@
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { Box, Container, Typography } from "@mui/material";
+import * as React from "react";
 import ForgotPassword from "@/src/components/ForgotPassword";
-import styled from "@emotion/styled";
-import { Toaster } from "react-hot-toast";
+import Toast from "react-hot-toast";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
-const StyledContainer = styled(Container)`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 20px;
-  height: 100vh;
-`;
-
-const StyledBox = styled(Box)`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-`;
-
-export default function ForgotPasswordPage(): React.JSX.Element {
-  const router = useRouter();
+const ForgotPasswordPage = (): React.JSX.Element => {
+  const onForgotPassword = async (values: { email: string }): Promise<void> => {
+    try {
+      await fetch("/api/users/forgotpassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+    } catch (err) {
+      const errorObj = err as { message: string; status: number };
+      Toast.error(errorObj.message);
+    }
+  };
 
   return (
-    <StyledContainer>
+    <Container
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        gap: "20px",
+        height: "100vh",
+      }}
+    >
       <Typography variant="h3">NextJS Music App</Typography>
-      <StyledBox>
-        <ForgotPassword
-          navigate={(path) => {
-            router.push(path);
-          }}
-        />
-      </StyledBox>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-        gutter={8}
-        containerClassName=""
-        containerStyle={{}}
-        toastOptions={{
-          className: "",
-          duration: 5000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          width: "100%",
         }}
-      />
-    </StyledContainer>
+      >
+        <ForgotPassword onForgotPassword={onForgotPassword} />
+      </Box>
+    </Container>
   );
-}
+};
+
+export default ForgotPasswordPage;

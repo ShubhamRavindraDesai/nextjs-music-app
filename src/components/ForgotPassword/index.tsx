@@ -1,11 +1,11 @@
 "use client";
-import { BOXSHADOW_1 } from "@/src/constants";
 import styled from "@emotion/styled";
-import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
-import axios from "axios";
+import { Box, Typography, Button, InputLabel, TextField } from "@mui/material";
 import Link from "next/link";
-import React, { useEffect } from "react";
-import toast from "react-hot-toast";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { BOXSHADOW_1 } from "@/src/constants";
+import { validationSchema } from "./helper";
 
 const StlyedRootBox = styled(Box)`
   display: flex;
@@ -18,81 +18,66 @@ const StlyedRootBox = styled(Box)`
   padding: 8px;
 `;
 
-interface ForgotPasswordProps {
-  navigate: (path: string) => void;
-}
+const StyledErrorMessage = styled(ErrorMessage)`
+  color: red !important;
+  font-size: 14px;
+  margin-top: 4px;
+`;
 
 export default function ForgotPassword({
-  navigate,
+  onForgotPassword,
 }: ForgotPasswordProps): JSX.Element {
-  const [user, setUser] = React.useState({
+  const initialValues = {
     email: "",
-  });
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-
-  const onForgotPassword = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      await axios.post("/api/users/forgotpassword", user);
-      navigate("/");
-    } catch (err) {
-      const error = err as { message: string; status: number };
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
   };
 
-  useEffect(() => {
-    if (user.email.length > 0) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [user]);
-
   return (
-    <>
-      <StlyedRootBox data-testid="forgot-password-root-box">
-        <Typography data-testid="title">
-          {loading ? "Processing" : "Forgot Password"}
-        </Typography>
-        <hr />
-        <InputLabel data-testid="email-label" htmlFor="email">
-          email
-        </InputLabel>
-        <TextField
-          data-testid="email-input"
-          id="email"
-          type="text"
-          value={user.email}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => {
-            setUser({ ...user, email: e.target.value });
-          }}
-          placeholder="email"
-        />
-
-        <Button
-          data-testid="forgot-password-button"
-          onClick={() => {
-            void onForgotPassword();
-          }}
-          disabled={buttonDisabled}
-        >
-          {buttonDisabled ? "No Forgot Password" : "Forgot Password"}
-        </Button>
-        <Box display={"flex"} justifyContent="space-between">
-          <Link data-testid="login-page-button" href="/">
-            Visit login page
-          </Link>
-          <Link data-testid="signup-page-button" href="/signup">
-            Visit sign up page
-          </Link>
-        </Box>
-      </StlyedRootBox>
-    </>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        await onForgotPassword(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ isSubmitting }) => (
+        <Form style={{ width: "100%" }}>
+          <StlyedRootBox data-testid="forgot-password-root-box">
+            <Typography data-testid="title">
+              {isSubmitting ? "Processing" : "Forgot Password"}
+            </Typography>
+            <hr />
+            <InputLabel data-testid="email-label" htmlFor="email">
+              email
+            </InputLabel>
+            <Field
+              data-testid="email-input"
+              type="text"
+              name="email"
+              as={TextField}
+              placeholder="Email"
+            />
+            <div style={{ color: "red" }}>
+              <StyledErrorMessage data-testid="email-error" name="email" />
+            </div>
+            <Button
+              data-testid="forgot-password-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Processing..." : "Forgot Password"}
+            </Button>
+            <Box display={"flex"} justifyContent="space-between">
+              <Link data-testid="login-page-button" href="/">
+                Visit login page
+              </Link>
+              <Link data-testid="signup-page-button" href="/signup">
+                Visit sign up page
+              </Link>
+            </Box>
+          </StlyedRootBox>
+        </Form>
+      )}
+    </Formik>
   );
 }

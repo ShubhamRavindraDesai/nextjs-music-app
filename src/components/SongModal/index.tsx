@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect } from "react";
+import Image from "next/image";
 import { Button, Typography } from "@mui/material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { useDispatch, useSelector } from "react-redux";
 import { CardBox, DetailsBox, StyledImageBox, StyledModelBox } from "./style";
 import { getYear } from "@/utils/Date";
 import { sliceText } from "@/utils/GlobalFuntions";
-import LazyImage from "../LazyImage";
 import { setCurrentSong, setPlay } from "@/src/reducers/SongReducer";
 import { INITIAL_SONG } from "@/src/constants";
 
@@ -30,7 +30,6 @@ const SongModal = ({ song }: SongModalType): JSX.Element => {
   useEffect(() => {
     if (song) {
       dispatch(setCurrentSong({ currentSong: song }));
-      dispatch(setPlay({ isPlaying: true }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [song]);
@@ -39,7 +38,19 @@ const SongModal = ({ song }: SongModalType): JSX.Element => {
     <StyledModelBox>
       <CardBox>
         <StyledImageBox>
-          <LazyImage url={song?.imageUrl ?? ""} />
+          <Image
+            data-testid="card-media"
+            src={song?.imageUrl ?? ""}
+            alt="Song picture"
+            width={500}
+            height={200}
+            loading="lazy"
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "8px",
+            }}
+          />
         </StyledImageBox>
         <DetailsBox>
           <Typography component="h5" variant="h6" color="#334155">

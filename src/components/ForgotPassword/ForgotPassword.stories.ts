@@ -15,5 +15,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const ForgotPasswordPrimary: Story = {
-  args: {},
+  args: {
+    onForgotPassword: async () => {
+      ("");
+    },
+  },
 };

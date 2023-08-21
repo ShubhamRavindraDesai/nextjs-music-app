@@ -1,5 +1,3 @@
-import axios from "axios";
-
 interface ResponseType {
   data: Song[];
   error: string | null;
@@ -8,23 +6,24 @@ interface ResponseType {
 
 export const getSongs = async (url: string): Promise<ResponseType> => {
   try {
-    const response = await axios.get(url);
+    const res = await fetch(url, { method: "GET" });
+    const response = await res.json();
 
-    if (response?.data?.success) {
-      response?.data?.data?.songs.forEach((element: Song) => {
+    if (response?.success) {
+      response?.songs.forEach((element: Song) => {
         delete element?.createdAt;
         delete element?.updatedAt;
       });
       return {
-        data: response?.data?.songs as Song[],
+        data: response?.songs as Song[],
         error: null,
-        message: response?.data?.message,
+        message: response?.message,
       };
     } else {
       return {
         data: [],
-        error: response?.data?.error,
-        message: response?.data?.error,
+        error: response?.error,
+        message: response?.error,
       };
     }
   } catch (error) {

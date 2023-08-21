@@ -5,6 +5,7 @@ export const StyledRootBox = styled(Box)`
   cursor: pointer;
   border-radius: 10px;
   box-shadow: ${BOXSHADOW_1};
+  width: 100%;
 `;
 
 export const StyledDetailsBox = styled(Box)(() => ({
@@ -15,9 +16,4 @@ export const StyledDetailsBox = styled(Box)(() => ({
 
 export const StyledSkeleton = styled(Skeleton)`
   border-radius: 10px 10px 0 0;
-`;
-
-export const StyledImageBox = styled(Box)`
-  height: 200px;
-  width: 100%;
 `;
