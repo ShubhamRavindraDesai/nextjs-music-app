@@ -1,7 +1,6 @@
 "use client";
 
 import SongPlayer from "@/components/SongPlayer";
-import store from "@/src/ducks/store";
 import { setPlay, setCurrentSong } from "@/src/reducers/SongReducer";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,15 +65,17 @@ const Footer = (): JSX.Element => {
     const currentSongIndex = songs?.findIndex(isPrevSong);
     const prevSong =
       songs[currentSongIndex > 0 ? currentSongIndex - 1 : songs?.length - 1];
-    dispatch(setCurrentSong({ currentSong: prevSong }));
+    if (prevSong.previewUrl)
+      dispatch(setCurrentSong({ currentSong: prevSong }));
   };
 
   const handleNextButtonClick = (): void => {
     const isNextSong = (song: Song): boolean => song?.id === currentSong?.id;
     const currentSongIndex = songs?.findIndex(isNextSong);
-    const prevSong =
+    const nextSong =
       songs[currentSongIndex < songs.length - 1 ? currentSongIndex + 1 : 0];
-    dispatch(setCurrentSong({ currentSong: prevSong }));
+    if (nextSong.previewUrl)
+      dispatch(setCurrentSong({ currentSong: nextSong }));
   };
 
   const updateTime = (): void => {

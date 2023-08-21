@@ -30,7 +30,6 @@ const SongModal = ({ song }: SongModalType): JSX.Element => {
   useEffect(() => {
     if (song) {
       dispatch(setCurrentSong({ currentSong: song }));
-      dispatch(setPlay({ isPlaying: true }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [song]);

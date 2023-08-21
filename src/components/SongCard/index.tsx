@@ -1,9 +1,9 @@
 "use client";
 
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import { StyledDetailsBox, StyledImageBox, StyledRootBox } from "./style";
+import { StyledDetailsBox, StyledRootBox } from "./style";
 
 const SongCard = (props: CardPropType): JSX.Element => {
   const { song, navigate } = props;
@@ -19,21 +19,21 @@ const SongCard = (props: CardPropType): JSX.Element => {
         setSong(song);
       }}
     >
-      <StyledImageBox data-testid="image">
+      <Box data-testid="image">
         <Image
+          priority
           data-testid="card-media"
           src={song?.imageUrl}
           alt="Song picture"
           width={500}
           height={200}
-          loading="lazy"
           style={{
-            width: "100%",
-            height: "100%",
+            maxHeight: "200px",
+            height: "auto",
             borderRadius: "8px",
           }}
         />
-      </StyledImageBox>
+      </Box>
       <StyledDetailsBox>
         <Typography
           noWrap

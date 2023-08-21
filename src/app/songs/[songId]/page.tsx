@@ -1,11 +1,21 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { PrismaClient } from "@prisma/client";
 import SongModal from "@/src/components/SongModal";
 import { INITIAL_SONG } from "@/src/constants";
 import NoDataFound from "@/src/components/NoDataFound";
-import store from "@/src/ducks/store";
-import { setCurrentSong } from "@/src/reducers/SongReducer";
+import prisma from "../../lib/prisma";
+
+export async function generateStaticParams(): Promise<
+  Array<{
+    songId: string;
+  }>
+> {
+  const res = await prisma.song.findMany();
+  const ids = res.map((song) => {
+    return { songId: song.id };
+  });
+  return ids;
+}
 
 const SongPage = async ({
   params,
@@ -13,14 +23,11 @@ const SongPage = async ({
   params: { songId: string };
 }): Promise<JSX.Element> => {
   try {
-    const prisma = new PrismaClient();
     const songRes = await prisma.song.findFirst({
       where: {
         id: { equals: params.songId },
       },
     });
-
-    store.dispatch(setCurrentSong({ currentSong: songRes }));
 
     return (
       <Box>

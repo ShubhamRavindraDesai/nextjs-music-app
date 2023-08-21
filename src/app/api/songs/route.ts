@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../lib/prisma";
 
 /**
  * @swagger
@@ -62,7 +62,7 @@ export const GET = async (
     const url = new URL(req.url);
     const search = url.searchParams.get("search") as string;
     const skip = Number(url.searchParams.get("skip"));
-    const prisma = new PrismaClient();
+    // const prisma = new PrismaClient();
 
     if (!search) {
       const songs = await prisma.song.findMany({ take: 25, skip: skip ?? 0 });

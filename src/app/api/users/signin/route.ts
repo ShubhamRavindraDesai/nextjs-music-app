@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/src/app/lib/prisma";
 
 /**
  * @swagger
@@ -73,7 +73,6 @@ export async function POST(request: NextRequest): Promise<
   try {
     const reqBody = await request.json();
     const { email, password } = reqBody;
-    const prisma = new PrismaClient();
 
     const user = await prisma.user.findFirst({
       where: {
