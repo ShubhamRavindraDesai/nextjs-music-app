@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import styled from "@emotion/styled";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -42,7 +41,13 @@ const UserSignup = ({ navigate }: UserSignupProps): JSX.Element => {
   }): Promise<void> => {
     try {
       setLoading(true);
-      await axios.post("/api/users/signup", values);
+      await fetch("/api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
       toast.success("Signup success");
     } catch (err) {
       const error = err as {

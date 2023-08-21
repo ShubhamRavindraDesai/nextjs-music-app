@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/src/app/lib/prisma";
 
 /**
  * @swagger
@@ -74,7 +74,6 @@ export async function POST(request: NextRequest): Promise<
     const { email, password } = reqBody;
 
     // check if user already exists
-    const prisma = new PrismaClient();
     const user = await prisma.user.findMany({
       where: {
         email,

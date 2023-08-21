@@ -1,3 +1,4 @@
+"use client";
 import styled from "@emotion/styled";
 import { Box, Typography, Button, InputLabel, TextField } from "@mui/material";
 import Link from "next/link";

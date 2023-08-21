@@ -2,7 +2,6 @@
 import { BOXSHADOW_1 } from "@/src/constants";
 import styled from "@emotion/styled";
 import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
-import axios from "axios";
 import Link from "next/link";
 import React from "react";
 import toast from "react-hot-toast";
@@ -34,7 +33,13 @@ const UserSignIn = ({ navigate }: UserSignInProps): JSX.Element => {
   }): Promise<void> => {
     try {
       setLoading(true);
-      await axios.post("/api/users/signin", values);
+      await fetch("/api/users/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
       toast.success("Login success");
       navigate("/songs");
