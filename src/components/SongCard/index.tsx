@@ -29,7 +29,7 @@ const SongCard = (props: CardPropType): JSX.Element => {
           height={200}
           style={{
             maxHeight: "200px",
-            height: "auto",
+            height: "200px",
             borderRadius: "8px",
           }}
         />
