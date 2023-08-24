@@ -5,6 +5,8 @@ import { INITIAL_SONG } from "@/src/constants";
 import NoDataFound from "@/src/components/NoDataFound";
 import prisma from "../../lib/prisma";
 
+export const runtime = 'edge';
+
 export async function generateStaticParams(): Promise<
   Array<{
     songId: string;
