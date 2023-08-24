@@ -46,6 +46,7 @@ import prisma from "../../lib/prisma";
  *                 error:
  *                   type: string
  */
+export const runtime = 'edge';
 export const GET = async (
   req: Request
 ): Promise<
