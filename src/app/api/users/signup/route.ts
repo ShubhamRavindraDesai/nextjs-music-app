@@ -59,7 +59,7 @@ import prisma from "@/src/app/lib/prisma";
  *                   type: string
  *                   description: An error message indicating the reason for the server error.
  */
-
+export const runtime = 'edge';
 export async function POST(request: NextRequest): Promise<
   | NextResponse<{
       message: string;
